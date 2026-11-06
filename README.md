@@ -41,7 +41,7 @@ codex plugin add hakula-workflow@hakula-plugins
 ### OMP
 
 ```bash
-omp plugin marketplace add https://github.com/hakula139/plugins
+omp plugin marketplace add hakula139/plugins
 omp plugin install hakula-workflow@hakula-plugins
 ```
 
