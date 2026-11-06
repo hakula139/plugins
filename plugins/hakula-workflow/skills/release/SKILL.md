@@ -19,13 +19,13 @@ Read the repository's release doc first, such as `RELEASING.md` or `docs/releasi
 
    ```bash
    git cliff \
-     --config-url https://raw.githubusercontent.com/hakula139/devkit/v1/cliff.toml \
+     --config-url https://raw.githubusercontent.com/hakula139/devkit/v1.0.0-rc.3/cliff.toml \
      --unreleased \
      --tag vX.Y.Z \
      --prepend CHANGELOG.md
    ```
 
-   The draft keeps `feat`, `fix`, `perf`, and any `!` title. git-cliff counts the commits it skips, and `-vv` lists them. A stable section covers its prereleases. For a prerelease such as `vX.Y.Z-rc.2`, add `--tag-pattern '^v[0-9]'` so the section starts at the previous tag of any kind.
+   devkit's config keeps `feat`, `fix`, `perf`, and any `!` title. git-cliff counts the commits it skips, and `-vv` lists them. A stable section covers its prereleases. For a prerelease such as `vX.Y.Z-rc.2`, add `--tag-pattern '^v[0-9]'` so the section starts at the previous tag of any kind.
 
 3. Curate the draft for users, since PR titles are too short to explain a change:
 

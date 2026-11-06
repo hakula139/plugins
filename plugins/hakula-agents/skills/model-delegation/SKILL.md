@@ -8,7 +8,7 @@ description: >-
 
 # Model Delegation
 
-Delegate according to configured tiers, using the track record below to narrow model assignments. Apply the private track record the global instructions state, which takes precedence for the models it names. A model lacking a record for a given task type receives work like any other delegate, with the standard review workflow judging the result.
+Delegate according to configured tiers, using the track record below to narrow model assignments. If the global instructions state a private track record, it takes precedence for the models it names. A model lacking a record for a given task type receives work like any other delegate, with the standard review workflow judging the result.
 
 ## Recording
 

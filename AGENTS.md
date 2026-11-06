@@ -19,8 +19,9 @@ plugins holds Hakula's agent skills, grouped into plugins that coding agents ins
 
 - Run the pre-commit hooks on every commit. In each new checkout or worktree, run `nix develop -c true` once to install them. Never bypass the hooks with `--no-verify` or `PRE_COMMIT_ALLOW_NO_CONFIG`. When a hook, test, or CI job fails, fix its cause.
 - Wrap code and comments at 100 columns, counting the indent, end section banners at column 100, and keep a single-line string literal whole at any length.
-- Keep every skill self-contained and generic: it runs from its own directory with no build step, and names tools, clients, and repositories that any user can find. A host's own paths, aliases, and private repositories belong in that host's global instructions, which a skill may refer to.
+- Keep every skill self-contained and generic: it runs from its own directory with no build step, and names tools, clients, and repositories that any user can find. A host's own paths, aliases, and private repositories belong in that host's global instructions. A skill may defer to facts they state, such as the configuration repository, and states every rule it needs inline, since other users' instructions lack the host's sections.
 - Name each skill uniquely across all plugins, since Nix consumers flatten them into one directory, and move a skill between plugins without renaming it.
+- Update the README's plugin table whenever a skill is added, moved, or renamed.
 - Link only public material in skills, issues, pull requests, and their comments, and never reference local working notes, private paths, or private repositories.
 
 ## Verification

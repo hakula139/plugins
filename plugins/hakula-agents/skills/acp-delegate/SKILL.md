@@ -8,7 +8,7 @@ compatibility: Requires acpx
 
 Use `acpx` to start or resume a configured assistant. Run `acpx config show` to see the targets that `~/.acpx/config.json` defines under `agents`, and add a missing assistant there. Other names fall through to acpx's upstream registry and may launch an unmanaged agent.
 
-Delegates do not share your conversation, so provide the repository, relevant files, task scope, and expected result. For code changes, assign file ownership and follow the global Shared-Tree Safety rules.
+Delegates do not share your conversation, so provide the repository, relevant files, task scope, and expected result. For code changes, assign each delegate the files it owns and keep its staging and commits to them.
 
 ## Single task
 

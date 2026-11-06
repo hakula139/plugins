@@ -25,7 +25,7 @@ Read the repository's contribution instructions before starting, and create work
 ## Worktrees
 
 - Keep the main checkout on the default branch, because several agents may work in the repository at once and editing it or switching its branch can collide with their work.
-- Create every task branch, including the coordinator's own, with `workmux add <branch> --name <handle> --headless --json`, and open or hand the session the receipt's `worktree_path`, where Workmux's `worktree_dir` setting puts it. Always pass `--name`, since every `add` without one takes Workmux's `workmux-` prefix, which marks an unattended Workmux worker.
+- Create every task branch, including the coordinator's own, with `workmux add <branch> --name <handle> --headless --json`, and open or hand the session the receipt's `worktree_path`, where Workmux's `worktree_dir` setting puts it. Always pass `--name`, since an `add` without one applies Workmux's configured `worktree_prefix`, which a host may use to mark unattended workers.
 - Never run `git worktree add`, since Workmux records the handle, branch, and base in git config.
 - To discard an unwanted worktree, use `workmux remove --force <handle>`.
 
@@ -52,7 +52,7 @@ Read the repository's contribution instructions before starting, and create work
 - Record the chosen examples and the conventions they show, including heading names, hierarchy and order, prose or list structure, and validation format, and include these notes in any brief.
 - Infer assignees from comparable requests, checking the authenticated identity when the convention is self-assignment.
 - Match labels to established usage and the available labels' descriptions. Commit types can inform the choice but do not imply a fixed label mapping.
-- If metadata remains ambiguous, choose the closest established match and record it as the global Communication rule directs. Never invent a rule or silently omit metadata.
+- If metadata remains ambiguous, choose the closest established match, record the choice, and ask the user to confirm it in the next report. Never invent a rule or silently omit metadata.
 - Keep each request focused on one purpose. Put unrelated changes, including dependency or lockfile churn, in separate requests, and fix every occurrence of the same problem within a repository in one request.
 
 ### Description

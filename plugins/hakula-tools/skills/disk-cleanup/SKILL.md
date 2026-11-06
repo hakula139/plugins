@@ -39,7 +39,7 @@ Check whether a candidate is in use before treating it as safe. `find <path> \( 
 - **Build output**: Run `cargo clean` in the project or worktree that owns a `target/`. Remove a target dir outside any project, such as one in `/tmp`, directly.
 - **Caches**: `uv cache clean`, `pnpm store prune`, `npm cache clean --force`, and `brew cleanup --prune=all`.
 - **Docker**: `docker image prune -a -f` removes images that no container uses. Leave volumes to the user because they hold data.
-- **Nix store**: `sudo nix-collect-garbage --delete-old` deletes old generations and collects their garbage. It requires sudo, so give the command to the user.
+- **Nix store**: `sudo nix-collect-garbage --delete-older-than 3d`, or `nh clean all --keep 5 --keep-since 3d` where `nh` is installed, deletes older system generations and collects their garbage while keeping recent rollbacks. It requires sudo, so give the command to the user. The user's own profile generations need the same `nix-collect-garbage` command run without sudo.
 - **Local snapshots**: `tmutil deletelocalsnapshots <date>` frees space used by a snapshot. It requires the user's decision and sudo, so give them the command too.
 - **Agent worktrees**: Remove finished ones with `clean-gone` as the `git-workflow` skill's Cleanup section describes, which keeps branch bookkeeping and agent memory consistent. To discard an unwanted worktree, follow the `git-workflow` skill.
 

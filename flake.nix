@@ -39,8 +39,9 @@
     let
       inherit (nixpkgs) lib;
 
-      directories =
-        path: lib.attrNames (lib.filterAttrs (_: type: type == "directory") (builtins.readDir path));
+      isDirectory = _: type: type == "directory";
+      directories = path: lib.attrNames (lib.filterAttrs isDirectory (builtins.readDir path));
+      plugins = directories ./plugins;
 
       pluginSkills =
         plugin:
@@ -53,7 +54,7 @@
     # Library
     # ----------------------------------------------------------------------------------------------
     {
-      lib.skills = lib.foldl' lib.attrsets.unionOfDisjoint { } (map pluginSkills (directories ./plugins));
+      lib.skills = lib.foldl' lib.attrsets.unionOfDisjoint { } (map pluginSkills plugins);
     }
     // devkit.lib.eachSystem devkit.lib.systems (
       system:
@@ -79,6 +80,13 @@
             pkgs.lsof
             pkgs.openssh
           ];
+
+          meta = {
+            description = "Remove finished local Git branches and stale linked worktrees";
+            homepage = "https://github.com/hakula139/plugins";
+            license = lib.licenses.mit;
+            platforms = lib.platforms.all;
+          };
         };
 
         # ------------------------------------------------------------------------------------------
