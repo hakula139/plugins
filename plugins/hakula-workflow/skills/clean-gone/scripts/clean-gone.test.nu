@@ -168,6 +168,12 @@ def dead-pid []: nothing -> int {
   )
 }
 
+# The pid of a `sleep` that runs for a minute outside the script's ancestry. A process of another
+# user, such as pid 1, would not do, since the Darwin build sandbox hides it from `ps`.
+def live-pid []: nothing -> int {
+  ^sh -c 'sleep 60 >/dev/null 2>&1 & echo $!' | str trim | into int
+}
+
 def claude-lock [pid: int]: nothing -> string {
   $"claude agent agent-a1b2c3d4 \(pid ($pid) start 1730800000\)"
 }
@@ -318,6 +324,7 @@ def "test errors that leave nothing checkable exit 2 without output" [] {
 # --------------------------------------------------------------------------------------------------
 
 def "test a worktree in use is kept even when its branch is finished" [] {
+  let live = (live-pid)
   let cases = [
     {
       name: "a process inside it"
@@ -342,9 +349,9 @@ def "test a worktree in use is kept even when its branch is finished" [] {
     }
     {
       name: "another live session's lock"
-      lock: (claude-lock 1)
+      lock: (claude-lock $live)
       processes: []
-      lines: ["SKIP {wt}: is locked by another running session (pid 1)"]
+      lines: [$"SKIP {wt}: is locked by another running session \(pid ($live)\)"]
     }
   ]
 
@@ -370,6 +377,7 @@ def "test a worktree in use is kept even when its branch is finished" [] {
     assert equal $result.exit_code 1 $case.item.name
     assert-kept $repo $worktree "feat/wt" $case.item.name
   }
+  ^kill $live
 }
 
 def "test a lock is released for an exited session or a finished branch of this session" [] {
