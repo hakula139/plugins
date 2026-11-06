@@ -11,10 +11,8 @@ foldl
 glab
 hakula
 nixfmt
-nixgc
 nixos
 nixpkgs
-nixsw
 nums
 nuon
 pcpu

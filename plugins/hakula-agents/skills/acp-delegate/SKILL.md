@@ -1,11 +1,12 @@
 ---
 name: acp-delegate
 description: Delegate a bounded task or consult Claude Code or Codex through ACP, including work in another repository.
+compatibility: Requires acpx
 ---
 
 # ACP Delegation
 
-Use `acpx` to start or resume a configured assistant. Run `acpx config show` to see this host's targets, `claude` and `codex`. If a target is disabled, the output tells you which option enables it. Other names fall through to acpx's upstream registry and may launch an unmanaged agent.
+Use `acpx` to start or resume a configured assistant. Run `acpx config show` to see the targets that `~/.acpx/config.json` defines under `agents`, and add a missing assistant there. Other names fall through to acpx's upstream registry and may launch an unmanaged agent.
 
 Delegates do not share your conversation, so provide the repository, relevant files, task scope, and expected result. For code changes, assign file ownership and follow the global Shared-Tree Safety rules.
 
@@ -17,7 +18,7 @@ Delegates do not share your conversation, so provide the repository, relevant fi
 acpx --cwd /absolute/path/to/repo codex exec 'Read src/auth/ and identify the token refresh race. Do not edit files.'
 ```
 
-The delegate loads the selected checkout's project instructions and runs through this host's assistant wrappers, using their authentication and proxy setup. Its tools and plugins retain their own configuration.
+The delegate loads the selected checkout's project instructions and runs through the command its config entry names, with that command's authentication. Its tools and plugins retain their own configuration.
 
 ## Follow-up work
 

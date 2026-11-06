@@ -7,6 +7,7 @@ description: >-
   an existing issue, cleaning up after merged or abandoned work, or performing Git ref creation and
   publication tasks, including PR titles and descriptions. Skip read-only Git inspection and code
   review.
+compatibility: Requires Workmux for worktrees
 ---
 
 # Git Workflow
@@ -24,8 +25,8 @@ Read the repository's contribution instructions before starting, and create work
 ## Worktrees
 
 - Keep the main checkout on the default branch, because several agents may work in the repository at once and editing it or switching its branch can collide with their work.
-- Create every task branch, including the coordinator's own, with `workmux add <branch> --name <handle> --headless --json`, and open or hand the session the receipt's `worktree_path`. The worktree lands under `<parent>/<repo>__worktrees/<handle>`. Always pass `--name`, since every `add` without one takes Workmux's `workmux-` prefix, which activity-report reads as an unattended Workmux worker.
-- Never run `git worktree add`, since Workmux records the handle, branch, and base in git config and places the worktree beside the checkout.
+- Create every task branch, including the coordinator's own, with `workmux add <branch> --name <handle> --headless --json`, and open or hand the session the receipt's `worktree_path`, where Workmux's `worktree_dir` setting puts it. Always pass `--name`, since every `add` without one takes Workmux's `workmux-` prefix, which marks an unattended Workmux worker.
+- Never run `git worktree add`, since Workmux records the handle, branch, and base in git config.
 - To discard an unwanted worktree, use `workmux remove --force <handle>`.
 
 ## Ignore rules

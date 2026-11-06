@@ -100,8 +100,9 @@ A memory is a candidate only when all of these hold:
 Choose the most specific file that owns the rule:
 
 - **One repository**: The convention doc for the affected area, or `AGENTS.md` if no convention doc applies.
-- **Every project**: The global instruction sources in the nixos-config checkout, located as described in the `environment-repair` skill. `home/modules/llm-assistants/instructions/shared.md` contains rules for every assistant, and adjacent files such as `claude-code.md` contain additions for a single assistant. Sections rendered from an `@name@` placeholder live in `home/modules/llm-assistants/shared/prompt-fragments/`. Never edit generated files such as `~/.claude/CLAUDE.md` or `~/.codex/AGENTS.md`.
-- **One skill's procedure**: The skill's source `SKILL.md`. Shared skills live under `home/modules/llm-assistants/shared/skills/` in nixos-config. Skip any skill whose source cannot be traced to a repository.
+- **Every project**: The instruction sources in the configuration repository the global instructions name, located through that repository's `AGENTS.md`. Without one, the client's own global instruction file, such as `~/.claude/CLAUDE.md` or `~/.codex/AGENTS.md`, unless a tool generates it. Never edit a generated file.
+- **One skill's procedure**: The skill's source `SKILL.md`, in the repository that ships it: the `repository` of the plugin that installs it, or the place the configuration repository's `AGENTS.md` names. Skip any skill whose source cannot be traced to a repository.
+- **One model's track record**: The `model-delegation` skill, or the private track record when the observation names an internal snapshot or route, as that skill describes.
 
 Read the target before promoting a rule. If it already states the rule, delete the memory and its index line. If its admission rules reject the rule, such as when a repository admits only constraints a reader cannot infer from its code, keep the memory.
 

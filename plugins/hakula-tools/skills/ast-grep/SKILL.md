@@ -4,6 +4,7 @@ description: >-
   Search and rewrite code by syntax tree with the ast-grep CLI. Use when a match depends on code
   structure, such as call shapes, arguments, or nesting, that text search would over- or
   under-match, or when one mechanical change spans many files.
+compatibility: Requires the ast-grep CLI
 ---
 
 # ast-grep

@@ -4,6 +4,10 @@ description: >-
   Remove finished local Git branches and stale linked worktrees with the `clean-gone` command,
   moving agent memory into the main checkout. Use when asked to clean up merged branches or
   worktrees, after a PR / MR merges or closes, or when git branch reports gone upstreams.
+compatibility: >-
+  Requires Nushell 0.116 or later, Git, lsof, ssh, and gh or glab. Install the command with
+  `nix profile install github:hakula139/plugins#clean-gone`, or run this skill's
+  `scripts/clean-gone.nu` with `nu --no-config-file` from inside the repository.
 ---
 
 # Clean Gone Branches
@@ -29,6 +33,6 @@ Remove finished branches and stale worktrees while protecting work in progress. 
    - **Idle for over a day**: a clean detached worktree is removed when a branch or remote-tracking ref holds its HEAD. A clean worktree on a branch is removed, and its branch is deleted only when every commit is on a remote.
    - **No worktree**: a finished branch is deleted, and so is one without an open PR / MR whose commits are all on a remote once its last commit is over a day old. A branch with unpublished commits is never deleted, and it is skipped for review once its upstream is gone or its last commit is over a day old.
 
-3. Follow up on each line that ends with "Review whether it needs an MR." Inspect each flagged item, then open an MR for work worth keeping, under the standing authority for follow-up changes in a repository you already publish to, or report it to the user. Never discard uncommitted work unless the user names it.
+3. Follow up on each line that ends with "Review whether it needs an MR." Inspect each flagged item, then open a PR / MR for work worth keeping, under the standing authority for follow-up changes in a repository you already publish to, or report it to the user. Never discard uncommitted work unless the user names it.
 
 4. Report the worktrees and branches removed or skipped and the reason for each remaining skip. Removing a skipped worktree or branch another way needs the user's approval.

@@ -3,6 +3,7 @@ name: browser-debugging
 description: >-
   Investigate web UI failures, visual regressions, and browser performance. Use for browser testing,
   Playwright scripts, screenshots, console or network inspection, and cross-browser reproduction.
+compatibility: Requires Python Playwright for scripted runs
 ---
 
 # Browser Debugging
@@ -13,17 +14,18 @@ Reuse available browser tools before installing Playwright or downloading browse
 
 - Use the assistant's native browser controls, when available, to navigate and inspect pages interactively.
 - Use Chrome DevTools MCP to capture performance traces and diagnose console errors and network issues.
-- Use Python Playwright in the shared browser profile to run reproducible scripts or compare Chromium, Firefox, and WebKit.
+- Use Python Playwright to run reproducible scripts or compare Chromium, Firefox, and WebKit.
 
 ## Run standalone automation
 
-Run Python Playwright scripts with the profile's matching Playwright version and browser binaries. Use headless mode by default, and choose Firefox or WebKit when the issue involves another engine:
+Run Python Playwright scripts in the Playwright environment that the global instructions or the project name, which pairs a Playwright version with its browser binaries. Without one, use a Python environment whose `playwright install` fetched the browsers for its own `playwright` package. Use headless mode by default, and choose Firefox or WebKit when the issue involves another engine:
 
 ```bash
-nix develop nixos-config#browser -c python3 /tmp/browser-check.py
+uv run --with playwright playwright install chromium firefox webkit
+uv run --with playwright python3 /tmp/browser-check.py
 ```
 
-Run project-owned Playwright suites in their own environment, using the browser revisions required by their dependency version. The profile's `PLAYWRIGHT_BROWSERS_PATH` is paired with its bundled driver. To test changes to the profile itself, run `nix develop .#browser` from the configuration worktree.
+Run project-owned Playwright suites in their own environment, using the browser revisions required by their dependency version. A `PLAYWRIGHT_BROWSERS_PATH` holds the browsers of one Playwright version, so never point another version's driver at it.
 
 ## Gather evidence
 

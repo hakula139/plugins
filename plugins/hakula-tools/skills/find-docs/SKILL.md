@@ -4,11 +4,12 @@ description: >-
   Look up current documentation and examples with Context7. Use whenever a task depends on a
   library, framework, SDK, CLI tool, or cloud service's APIs, configuration, setup, migration, or
   version-specific behavior. Prefer this to web search for developer documentation.
+compatibility: Requires the ctx7 CLI
 ---
 
 # Find Docs
 
-Verify library-specific details against current documentation, even for familiar APIs. Use the managed `ctx7` command, which loads its API key at launch.
+Verify library-specific details against current documentation, even for familiar APIs, with the `ctx7` command.
 
 ## Resolve the library
 
@@ -32,6 +33,6 @@ Read the returned snippets and their source links, checking that the documented 
 
 ## Missing results and failures
 
-Refine the library name or question when results are irrelevant. If Context7 lacks the needed coverage, use available web search or fetch tools to read the project's official documentation or source. Report a quota, authentication, or service failure clearly and use the same fallback. The managed environment supplies authentication, so logging in does not replace its credential.
+Refine the library name or question when results are irrelevant. If Context7 lacks the needed coverage, use available web search or fetch tools to read the project's official documentation or source. Report a quota, authentication, or service failure clearly and use the same fallback.
 
 If no source can be reached, state the verification gap and identify any answer based on prior knowledge as potentially outdated.
