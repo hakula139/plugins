@@ -1,0 +1,7 @@
+{
+  "name": "hakula-agents",
+  "description": "Delegation, model track records, memory consolidation, and harness repair for coding agents",
+  "author": { "name": "Hakula", "url": "https://hakula.xyz" },
+  "repository": "https://github.com/hakula139/plugins",
+  "license": "MIT"
+}

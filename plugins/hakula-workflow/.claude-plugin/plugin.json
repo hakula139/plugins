@@ -1,0 +1,7 @@
+{
+  "name": "hakula-workflow",
+  "description": "Git, release, review, and code-layout conventions for coding agents",
+  "author": { "name": "Hakula", "url": "https://hakula.xyz" },
+  "repository": "https://github.com/hakula139/plugins",
+  "license": "MIT"
+}

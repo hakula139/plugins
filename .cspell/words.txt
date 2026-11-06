@@ -1,11 +1,13 @@
 acpx
 apfs
+attrsets
 cachix
 devkit
 direnv
 dtcg
 duarte
 enxio
+foldl
 glab
 hakula
 nixfmt
@@ -21,6 +23,7 @@ pdftoppm
 pids
 pkgs
 pmem
+pname
 poppler
 ppid
 regenerable

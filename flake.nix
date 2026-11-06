@@ -31,11 +31,31 @@
   # ------------------------------------------------------------------------------------------------
   outputs =
     {
+      self,
       nixpkgs,
       devkit,
       ...
     }:
-    devkit.lib.eachSystem devkit.lib.systems (
+    let
+      inherit (nixpkgs) lib;
+
+      directories =
+        path: lib.attrNames (lib.filterAttrs (_: type: type == "directory") (builtins.readDir path));
+
+      pluginSkills =
+        plugin:
+        let
+          root = ./plugins + "/${plugin}/skills";
+        in
+        lib.genAttrs (directories root) (name: devkit.lib.skillSource (root + "/${name}"));
+    in
+    # ----------------------------------------------------------------------------------------------
+    # Library
+    # ----------------------------------------------------------------------------------------------
+    {
+      lib.skills = lib.foldl' lib.attrsets.unionOfDisjoint { } (map pluginSkills (directories ./plugins));
+    }
+    // devkit.lib.eachSystem devkit.lib.systems (
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
@@ -43,14 +63,33 @@
 
         preCommit = dk.preCommit {
           src = ./.;
+          hooks.nu-check.enable = true;
         };
       in
       {
+        # ------------------------------------------------------------------------------------------
+        # Packages
+        # ------------------------------------------------------------------------------------------
+        packages.clean-gone = dk.mkNuApplication {
+          pname = "clean-gone";
+          version = "0-unstable-${lib.substring 0 8 self.lastModifiedDate}";
+          src = ./plugins/hakula-workflow/skills/clean-gone/scripts;
+          runtimeInputs = [
+            pkgs.git
+            pkgs.lsof
+            pkgs.openssh
+          ];
+        };
+
         # ------------------------------------------------------------------------------------------
         # Dev shell
         # ------------------------------------------------------------------------------------------
         devShells.default = pkgs.mkShell {
           name = "plugins-dev";
+          packages = [
+            dk.nushell
+            dk.nu-test
+          ];
           inputsFrom = [
             preCommit.shell
           ];
@@ -59,7 +98,30 @@
         # ------------------------------------------------------------------------------------------
         # Checks
         # ------------------------------------------------------------------------------------------
-        checks.pre-commit = preCommit.check;
+        checks = {
+          pre-commit = preCommit.check;
+          package = self.packages.${system}.clean-gone;
+
+          tests = dk.nuTests {
+            src = ./plugins;
+            runtimeInputs = [ pkgs.git ];
+          };
+
+          skills =
+            let
+              source = lib.fileset.toSource {
+                root = ./.;
+                fileset = lib.fileset.unions [
+                  ./.claude-plugin
+                  ./plugins
+                ];
+              };
+            in
+            pkgs.runCommand "plugins-skills" { } ''
+              ${lib.getExe dk.nushell} --no-config-file ${./nix/check-skills.nu} ${source}
+              touch "$out"
+            '';
+        };
 
         # ------------------------------------------------------------------------------------------
         # Formatter
