@@ -30,6 +30,7 @@ résumés
 sgconfig
 shfmt
 slideuments
+stdenv
 substituters
 taiki
 tmutil
