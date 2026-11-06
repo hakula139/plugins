@@ -27,7 +27,7 @@ claude plugin marketplace add hakula139/plugins
 claude plugin install hakula-workflow@hakula-plugins
 ```
 
-Claude Code clones the marketplace over SSH when `ssh -T git@github.com` succeeds, and `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` makes it clone over HTTPS instead. `claude plugin marketplace update hakula-plugins` fetches later changes.
+Claude Code clones the marketplace over SSH when `ssh -T git@github.com` succeeds, and `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` makes it clone over HTTPS instead. `claude plugin marketplace update hakula-plugins` fetches later changes, and `claude plugin update hakula-workflow@hakula-plugins` applies them.
 
 ### Codex
 
@@ -36,7 +36,7 @@ codex plugin marketplace add hakula139/plugins
 codex plugin add hakula-workflow@hakula-plugins
 ```
 
-`codex plugin marketplace upgrade hakula-plugins` fetches later changes.
+`codex plugin marketplace upgrade hakula-plugins` fetches later changes and refreshes the installed plugins.
 
 ### OMP
 
@@ -44,6 +44,8 @@ codex plugin add hakula-workflow@hakula-plugins
 omp plugin marketplace add hakula139/plugins
 omp plugin install hakula-workflow@hakula-plugins
 ```
+
+`omp plugin upgrade` skips a plugin whose version has not changed, which these never do, so take later changes with `omp plugin marketplace update` and `omp plugin install --force hakula-workflow@hakula-plugins`.
 
 ### Nix
 
