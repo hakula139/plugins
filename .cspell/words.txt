@@ -1,0 +1,10 @@
+cachix
+devkit
+direnv
+hakula
+nixfmt
+nixos
+nixpkgs
+pkgs
+shfmt
+substituters
