@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Harness Repair'
+  short_description: 'Delegate fixes for local assistant environment failures'
+  default_prompt: "Use $harness-repair to delegate this reproducible environment fix, verify it, and publish its PR / MR within the task's authorization."

@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Release'
+  short_description: 'Cut a release from the release PR through the published notes'
+  default_prompt: 'Use $release to prepare the release PR for this version and report its URL.'

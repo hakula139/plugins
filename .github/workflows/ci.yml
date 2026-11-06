@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   nix:
-    uses: hakula139/devkit/.github/workflows/nix.yml@main
+    uses: hakula139/devkit/.github/workflows/nix.yml@v1.0.0-rc.3
 
   result:
     name: CI Result
@@ -28,4 +28,4 @@ jobs:
       actions: read
     steps:
       - name: Check results
-        uses: hakula139/devkit/actions/ci-result@main
+        uses: hakula139/devkit/actions/ci-result@v1.0.0-rc.3

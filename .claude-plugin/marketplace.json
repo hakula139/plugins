@@ -1,0 +1,11 @@
+{
+  "name": "hakula-plugins",
+  "description": "Hakula's agent plugins",
+  "owner": { "name": "Hakula", "url": "https://hakula.xyz" },
+  "plugins": [
+    { "name": "hakula-workflow", "source": "./plugins/hakula-workflow" },
+    { "name": "hakula-languages", "source": "./plugins/hakula-languages" },
+    { "name": "hakula-tools", "source": "./plugins/hakula-tools" },
+    { "name": "hakula-agents", "source": "./plugins/hakula-agents" }
+  ]
+}
