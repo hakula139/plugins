@@ -63,6 +63,18 @@ Test a script with `std/assert` when its output is easy to get subtly wrong. Dri
 
   - Copy each input into a `mktemp` directory before running the script so the script never writes to a fixture.
 
+### The nu-test runner
+
+devkit's `nu-test` runs each command named `test <behavior>` in a `.test.nu` file as one test:
+
+- **Names**: a test name may hold only letters, digits, spaces, and `,.:-`, since the runner passes it to `nu --commands` as source text, where a quote, `;`, or `#` ends or breaks the command.
+- **One process per test**: the tests run in parallel, each in its own `nu` process, so a test that changes its environment or exits cannot affect the others.
+- **Load failures**: a file that fails to parse, or whose test names cannot be read, reports a `(load)` entry with its output and counts as a failure. A file that prints to stdout or exits while loading cannot report its test names, so it fails too.
+- **Stubs**: a `<name>.stub.nu` file beside a test file is installed as an executable `<name>` in the directory `NU_TEST_STUBS` names, with a shebang line the runner writes in place of any the stub has. Call a stub by `$env.NU_TEST_STUBS | path join <name>` or by prepending that directory to `PATH`.
+- **Shared helpers**: a `<name>.testlib.nu` file beside the test files holds builders that several of them `use`. devkit's `nuTests` copies it with the tests, while its packaging leaves `.test.nu`, `.stub.nu`, and `.testlib.nu` files out.
+- **Scratch space**: `TMPDIR` points to a fresh empty directory for each test, which the runner removes after the run, even if the file fails to load.
+- **Exit codes**: the runner prints one `PASS` or `FAIL` line per test and a `passed, failed` summary, then exits nonzero if any test fails or no tests run.
+
 ## Linting
 
 `nu --ide-check` exits 0 even when it reports an error, printing diagnostics as JSON, so inspect the severities. Without a max-errors argument, it exits 1 before reading the file. Because it catches delimiter errors and local `def` arity mismatches but treats a mistyped command as an external call, run the script once for real.

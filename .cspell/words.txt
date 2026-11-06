@@ -31,6 +31,7 @@ sgconfig
 shfmt
 slideuments
 substituters
+taiki
 tmutil
 tufte
 unreviewed
