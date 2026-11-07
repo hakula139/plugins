@@ -11,6 +11,14 @@ compatibility: Requires git-cliff and gh
 
 Read the repository's release doc first, such as `RELEASING.md` or `docs/releasing.md`, since its version files, stability surface, and checks take precedence over these steps. Follow `git-workflow` for the release PR and the tag.
 
+If `git-cliff` or `gh` is missing, enter a Nix shell:
+
+```bash
+nix shell nixpkgs#git-cliff nixpkgs#gh
+```
+
+Use the environment's existing GitHub authentication.
+
 ## Prepare the release PR
 
 1. Branch from the default branch as `chore/release-vX.Y.Z`, and set each version file the release doc names to `X.Y.Z`, since a release workflow that compares the tag with the package version fails on a mismatch.

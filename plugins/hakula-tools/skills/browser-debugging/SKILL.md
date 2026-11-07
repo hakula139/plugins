@@ -18,6 +18,12 @@ Reuse available browser tools before installing Playwright or downloading browse
 
 ## Run standalone automation
 
+If `uv` is missing, enter a Nix shell:
+
+```bash
+nix shell nixpkgs#uv
+```
+
 Run Python Playwright scripts in the Playwright environment that the global instructions or the project name, which pairs a Playwright version with its browser binaries. Without one, use a Python environment whose `playwright install` fetched the browsers for its own `playwright` package. Use headless mode by default, and choose Firefox or WebKit when the issue involves another engine:
 
 ```bash

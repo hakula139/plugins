@@ -13,6 +13,12 @@ ast-grep matches tree-sitter patterns against the syntax tree, so whitespace and
 
 Run `ast-grep`, never `sg`, which is shadow's group command on these hosts.
 
+If `ast-grep` or `jq` is missing, enter a Nix shell:
+
+```bash
+nix shell nixpkgs#ast-grep nixpkgs#jq
+```
+
 ## Choose a tool
 
 - `rg` for identifiers, literals, comments, configuration, prose, and file types ast-grep cannot parse. It is faster and easier to scan.
