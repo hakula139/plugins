@@ -22,14 +22,14 @@ Several skills refer to each other by name, such as `review` to `git-workflow`, 
 
 ### Claude Code
 
-Add the marketplace and install the workflow plugin.
+Add the marketplace and install the workflow plugin:
 
 ```bash
 claude plugin marketplace add hakula139/plugins
 claude plugin install hakula-workflow@hakula-plugins
 ```
 
-Fetch marketplace changes and apply them to the installed plugin.
+Fetch marketplace changes and apply them to the installed plugin:
 
 ```bash
 claude plugin marketplace update hakula-plugins
@@ -38,14 +38,14 @@ claude plugin update hakula-workflow@hakula-plugins
 
 ### Codex
 
-Add the marketplace and install the workflow plugin.
+Add the marketplace and install the workflow plugin:
 
 ```bash
 codex plugin marketplace add hakula139/plugins
 codex plugin add hakula-workflow@hakula-plugins
 ```
 
-Fetch marketplace changes and refresh the installed plugins.
+Fetch marketplace changes and refresh the installed plugins:
 
 ```bash
 codex plugin marketplace upgrade hakula-plugins
@@ -53,14 +53,14 @@ codex plugin marketplace upgrade hakula-plugins
 
 ### OMP
 
-Add the marketplace and install the workflow plugin.
+Add the marketplace and install the workflow plugin:
 
 ```bash
 omp plugin marketplace add hakula139/plugins
 omp plugin install hakula-workflow@hakula-plugins
 ```
 
-These plugins have no versions, so taking later changes requires a marketplace update and a forced reinstall.
+These plugins have no versions, so taking later changes requires a marketplace update and a forced reinstall:
 
 ```bash
 omp plugin marketplace update
@@ -88,7 +88,7 @@ home.packages = [
 ];
 ```
 
-Install `clean-gone` outside Home Manager.
+Install `clean-gone` outside Home Manager:
 
 ```bash
 nix profile install github:hakula139/plugins#clean-gone
