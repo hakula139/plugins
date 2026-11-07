@@ -23,29 +23,46 @@ Several skills refer to each other by name, such as `review` to `git-workflow`, 
 ### Claude Code
 
 ```bash
+# Add the marketplace and install the workflow plugin.
+# Claude Code uses SSH when ssh -T git@github.com succeeds.
 claude plugin marketplace add hakula139/plugins
 claude plugin install hakula-workflow@hakula-plugins
 ```
 
-Claude Code clones the marketplace over SSH when `ssh -T git@github.com` succeeds, and `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` makes it clone over HTTPS instead. `claude plugin marketplace update hakula-plugins` fetches later changes, and `claude plugin update hakula-workflow@hakula-plugins` applies them.
+```bash
+# To use HTTPS, replace the marketplace command above with this one.
+CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1 claude plugin marketplace add hakula139/plugins
+```
+
+```bash
+# Fetch marketplace changes and apply them to the installed plugin.
+claude plugin marketplace update hakula-plugins
+claude plugin update hakula-workflow@hakula-plugins
+```
 
 ### Codex
 
 ```bash
+# Add the marketplace and install the workflow plugin.
 codex plugin marketplace add hakula139/plugins
 codex plugin add hakula-workflow@hakula-plugins
-```
 
-`codex plugin marketplace upgrade hakula-plugins` fetches later changes and refreshes the installed plugins.
+# Fetch marketplace changes and refresh the installed plugins.
+codex plugin marketplace upgrade hakula-plugins
+```
 
 ### OMP
 
 ```bash
+# Add the marketplace and install the workflow plugin.
 omp plugin marketplace add hakula139/plugins
 omp plugin install hakula-workflow@hakula-plugins
-```
 
-`omp plugin upgrade` skips a plugin whose version has not changed, which these never do, so take later changes with `omp plugin marketplace update` and `omp plugin install --force hakula-workflow@hakula-plugins`.
+# These plugins have no versions, so omp plugin upgrade skips their updates.
+# Update the marketplace and force a reinstall to take later changes.
+omp plugin marketplace update
+omp plugin install --force hakula-workflow@hakula-plugins
+```
 
 ### Nix
 
@@ -68,7 +85,10 @@ home.packages = [
 ];
 ```
 
-Outside Home Manager, `nix profile install github:hakula139/plugins#clean-gone` installs the command.
+```bash
+# Install the command outside Home Manager.
+nix profile install github:hakula139/plugins#clean-gone
+```
 
 ## Development
 
