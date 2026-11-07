@@ -15,6 +15,12 @@ Classify each reported token before changing spelling configuration, so that a p
 
 Read the repository's spelling configuration, custom dictionaries, and the reported line in context, and use its pinned CSpell executable and existing check command.
 
+If the repository has no pinned executable and CSpell is missing, Nix provides one:
+
+```bash
+nix shell nixpkgs#cspell
+```
+
 ```bash
 cspell --show-suggestions <file>
 cspell trace --ignore-case --only-found <word>

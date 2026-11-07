@@ -11,6 +11,14 @@ compatibility: Requires the ctx7 CLI
 
 Verify library-specific details against current documentation, even for familiar APIs, with the `ctx7` command.
 
+Keep a configured `ctx7` wrapper when available, since it may supply `CONTEXT7_API_KEY`. Otherwise, Nix provides the CLI from nixpkgs unstable:
+
+```bash
+nix shell nixpkgs/nixos-unstable#ctx7
+```
+
+If authentication is needed, use `ctx7 login` or the environment's existing API key without printing or storing that key in task artifacts.
+
 ## Resolve the library
 
 ```bash

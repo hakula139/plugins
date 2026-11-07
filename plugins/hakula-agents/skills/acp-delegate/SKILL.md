@@ -8,7 +8,15 @@ compatibility: Requires acpx
 
 Use `acpx` to start or resume a configured assistant. Run `acpx config show` to see the targets that `~/.acpx/config.json` defines under `agents`, and add a missing assistant there. Other names fall through to acpx's upstream registry and may launch an unmanaged agent.
 
-Delegates do not share your conversation, so provide the repository, relevant files, task scope, and expected result. For code changes, assign each delegate the files it owns and keep its staging and commits to them.
+Delegates do not share your conversation, so provide the repository, relevant files, task scope, and expected result. For code changes, give parallel writers separate worktrees, assign each delegate the files it owns, and keep its staging and commits to them. Do not stash, reset, clean, or revert another worker's changes. Check the staged file list before committing, since a commit takes the whole index.
+
+If `acpx` is missing, Nix can supply Node.js for its upstream npm package:
+
+```bash
+nix shell nixpkgs#nodejs_24
+```
+
+In that shell, replace `acpx` in the commands below with `npx --yes acpx@latest`. Keep an existing managed `acpx`, since its wrapper may supply assistant settings or authentication.
 
 ## Single task
 
