@@ -13,7 +13,7 @@ Delegates do not share your conversation, so provide the repository, relevant fi
 If `acpx` is missing, Nix can supply Node.js for its upstream npm package:
 
 ```bash
-nix shell nixpkgs#nodejs_24
+nix shell nixpkgs#nodejs_26
 ```
 
 In that shell, replace `acpx` in the commands below with `npx --yes acpx@latest`. Keep an existing managed `acpx`, since its wrapper may supply assistant settings or authentication.
