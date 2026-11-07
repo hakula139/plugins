@@ -18,5 +18,5 @@ Diff `nix-instantiate --parse <file>` before and after reordering. Because the p
 
 - **Attribute names**: quote a name only when Nix requires it, in sets and access paths alike.
 - **Option lists**: separate options in Nix lists with a blank line so each reads and diffs as a unit, and keep environment transformations in their order.
-- **Format generators**: bind `pkgs.formats.json {}`, `pkgs.formats.yaml {}`, and `pkgs.formats.toml {}` to a named formatter before calling `generate`, including a single use, so the format definition is separate from the generated content.
+- **Format generators**: bind `pkgs.formats.json {}`, `pkgs.formats.yaml {}`, and `pkgs.formats.toml {}` as `json`, `yaml`, and `toml` before calling `generate`, including a single use, so the format definition is separate from the generated content.
 - **Package customization**: put nontrivial overrides and patches in dedicated package files, leaving callers to select the package. Keep a simple attribute override inline when it reads clearly. Before adding a patch or suppressing a diagnostic, establish the concrete upstream defect and use a maintained package that fixes it when available.
