@@ -10,6 +10,14 @@ description: >-
 
 Delegate according to configured tiers, using the track record below to narrow model assignments. A model lacking a record for a given task type receives work like any other delegate, with the standard review workflow judging the result.
 
+## Non-flagship delegates
+
+Design and convention limitations observed in Codex (GPT) and DeepSeek inform this shared policy. Apply it according to the actual model's configured tier, since a client or model family can include several tiers.
+
+Keep design, convention judgment, goal-based sweeps, and test writing with a flagship-tier agent. Once it settles the design, give non-flagship delegates fully specified tasks with mechanically checkable results. The brief names the files, approach, edge cases, checks, acceptance criteria, and stopping point.
+
+Require delegates to raise disagreements for resolution before changing the requirements or scope. Have a flagship-tier agent independently review code changes and the verification behind behavioral claims. For UI work, supply a measuring script when the claim needs measurements, and verify the rendered result in a browser before accepting it.
+
 ## Recording
 
 When a review or user steering corrects a delegate's work, save a `feedback` memory recording:
@@ -22,14 +30,10 @@ One clear failure of the model's ability is enough to stop giving it that kind o
 
 ## Track record
 
-- **Codex (GPT)**: Assign only fully specified tasks with mechanically checkable results, such as an exact edit list, because it does not reliably infer conventions or make design decisions. Keep design decisions, convention judgments, and test writing with Claude.
+### DeepSeek V4.1 Flash (`DeepSeek-V4.1-Flash-1017`)
 
-- **DeepSeek V4.1 Flash (`DeepSeek-V4.1-Flash-1017`)**: Hand it implementation only with a detailed design from a flagship-tier agent that names the files, approach, edge cases, and checks, because it does not reliably design on its own.
-
-  - **Judgment**: Keep goal-based convention sweeps and fix rounds that need judgment with a flagship-tier agent, because it applied a layout goal unevenly across sibling files, applied a reviewer's mistaken suggestion literally, and deleted accepted rationale comments while moving code.
-  - **Edge cases**: It follows exact edit lists and detailed review findings well, but it has mishandled edge cases even when the brief named them.
-  - **Tests**: Keep test writing with Claude, because its tests have let plausible bugs survive at full line coverage, as a reviewer's mutation testing showed.
-  - **UI work**: Hand it a measuring script and have a Claude reviewer check the result in a browser, because it has claimed a visual fix that a browser check showed had failed.
-  - **Disagreement**: Require it to report disagreement with the brief, because it has overridden an explicit instruction over a concern that was already moot.
-  - **Scope**: Give it an explicit stopping point, because it has spent hours on probes its brief did not ask for while a request others waited on stayed unpublished.
-  - **Images**: Keep image-reading work off its gateway route, which rejects screenshots returned inside tool results with HTTP 400 and ends the agent mid-task.
+- **Judgment**: It applied a layout goal unevenly across sibling files, applied a reviewer's mistaken suggestion literally, and deleted accepted rationale comments while moving code.
+- **Edge cases**: It follows exact edit lists and detailed review findings well, but it has mishandled edge cases even when the brief named them.
+- **Verification**: A reviewer's mutation testing found plausible bugs its tests missed despite full line coverage. It also claimed a visual fix that failed browser verification.
+- **Boundaries**: It overrode an explicit instruction over a concern that was already moot, and spent hours on probes outside the brief while others waited for its unpublished change.
+- **Gateway images**: Its observed gateway route rejects screenshots returned inside tool results with HTTP 400 and ends the agent mid-task. Use a route that accepts tool-result images for image-reading work.
