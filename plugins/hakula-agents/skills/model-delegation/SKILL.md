@@ -14,7 +14,7 @@ Delegate according to configured tiers, using the track record below to narrow m
 
 When a review or user steering corrects a delegate's work, save a `feedback` memory recording:
 
-- The model ID with its snapshot, such as `local_v2/DeepSeek-V4.1-Flash-1017`, read from the delegate's transcript, since a profile can route a role to another model and a new snapshot can alter the record.
+- The model ID with its snapshot, such as `DeepSeek-V4.1-Flash-1017`, read from the delegate's transcript, since a profile can route a role to another model and a new snapshot can alter the record.
 - The task type and what required fixing or steering.
 - Whether the brief left the gap, as gaps in the brief say nothing about the model.
 
@@ -24,7 +24,7 @@ One clear failure of the model's ability is enough to stop giving it that kind o
 
 - **Codex (GPT)**: Assign only fully specified tasks with mechanically checkable results, such as an exact edit list, because it does not reliably infer conventions or make design decisions. Keep design decisions, convention judgments, and test writing with Claude.
 
-- **DeepSeek V4.1 Flash (`local_v2/DeepSeek-V4.1-Flash-1017`)**: Hand it implementation only with a detailed design from a flagship-tier agent that names the files, approach, edge cases, and checks, because it does not reliably design on its own.
+- **DeepSeek V4.1 Flash (`DeepSeek-V4.1-Flash-1017`)**: Hand it implementation only with a detailed design from a flagship-tier agent that names the files, approach, edge cases, and checks, because it does not reliably design on its own.
 
   - **Judgment**: Keep goal-based convention sweeps and fix rounds that need judgment with a flagship-tier agent, because it applied a layout goal unevenly across sibling files, applied a reviewer's mistaken suggestion literally, and deleted accepted rationale comments while moving code.
   - **Edge cases**: It follows exact edit lists and detailed review findings well, but it has mishandled edge cases even when the brief named them.
