@@ -10,7 +10,7 @@ compatibility: Requires Poppler
 
 Read a PDF with the client's native reader when it has one, such as Claude Code's Read tool, and use Poppler where that reader falls short. Keep source documents and extracted content local unless the user asks to share them.
 
-If Poppler is missing, enter a Nix shell that provides the commands below:
+If Poppler is missing, enter a Nix shell:
 
 ```bash
 nix shell nixpkgs#poppler-utils

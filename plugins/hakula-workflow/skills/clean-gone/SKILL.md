@@ -11,13 +11,13 @@ compatibility: Requires Nushell 0.116 or later, Git, lsof, ssh, and gh or glab
 
 Remove finished branches and stale worktrees while protecting work in progress. The `clean-gone` command applies its plan by default. To discard an unwanted worktree, follow the `git-workflow` skill.
 
-If `clean-gone` is missing, its Nix package includes Nushell, Git, lsof, and ssh. Add the forge CLI for the repository, using `nixpkgs#glab` for GitLab:
+If `clean-gone` or the repository's forge CLI is missing, enter a Nix shell:
 
 ```bash
 nix shell github:hakula139/plugins#clean-gone nixpkgs#gh
 ```
 
-The forge CLI still needs the environment's authentication.
+Its Nix package includes Nushell, Git, lsof, and ssh. Use `nixpkgs#glab` in place of `nixpkgs#gh` for GitLab. The forge CLI still needs the environment's authentication.
 
 ## Workflow
 

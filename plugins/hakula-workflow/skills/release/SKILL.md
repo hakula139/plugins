@@ -11,7 +11,7 @@ compatibility: Requires git-cliff and gh
 
 Read the repository's release doc first, such as `RELEASING.md` or `docs/releasing.md`, since its version files, stability surface, and checks take precedence over these steps. Follow `git-workflow` for the release PR and the tag.
 
-If the release tools are missing, Nix provides them:
+If `git-cliff` or `gh` is missing, enter a Nix shell:
 
 ```bash
 nix shell nixpkgs#git-cliff nixpkgs#gh

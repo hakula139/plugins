@@ -18,7 +18,7 @@ Reuse available browser tools before installing Playwright or downloading browse
 
 ## Run standalone automation
 
-If `uv` is missing, Nix provides it:
+If `uv` is missing, enter a Nix shell:
 
 ```bash
 nix shell nixpkgs#uv

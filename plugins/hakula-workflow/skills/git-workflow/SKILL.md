@@ -24,11 +24,13 @@ Read the repository's contribution instructions before starting, and create work
 
 ## Worktrees
 
-If Workmux is missing, its upstream flake provides it, and tmux supplies its terminal backend:
+If Workmux or tmux is missing, enter a Nix shell:
 
 ```bash
 nix shell github:raine/workmux nixpkgs#tmux
 ```
+
+tmux supplies Workmux's terminal backend.
 
 - Keep the main checkout on the default branch, because several agents may work in the repository at once and editing it or switching its branch can collide with their work.
 - Create every task branch, including the coordinator's own, with `workmux add <branch> --name <handle> --headless --json`, and open or hand the session the receipt's `worktree_path`, where Workmux's `worktree_dir` setting puts it. Always pass `--name`, since an `add` without one applies Workmux's configured `worktree_prefix`, which a host may use to mark unattended workers.

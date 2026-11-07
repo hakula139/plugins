@@ -10,7 +10,7 @@ Use `acpx` to start or resume a configured assistant. Run `acpx config show` to 
 
 Delegates do not share your conversation, so provide the repository, relevant files, task scope, and expected result. For code changes, give parallel writers separate worktrees, assign each delegate the files it owns, and keep its staging and commits to them. Do not stash, reset, clean, or revert another worker's changes. Check the staged file list before committing, since a commit takes the whole index.
 
-If `acpx` is missing, Nix can supply Node.js for its upstream npm package:
+If `acpx` is missing, enter a Nix shell:
 
 ```bash
 nix shell nixpkgs#nodejs_26
