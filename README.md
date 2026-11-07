@@ -22,44 +22,47 @@ Several skills refer to each other by name, such as `review` to `git-workflow`, 
 
 ### Claude Code
 
+Add the marketplace and install the workflow plugin.
+
 ```bash
-# Add the marketplace and install the workflow plugin.
-# Claude Code uses SSH when ssh -T git@github.com succeeds.
 claude plugin marketplace add hakula139/plugins
 claude plugin install hakula-workflow@hakula-plugins
 ```
 
-```bash
-# To use HTTPS, replace the marketplace command above with this one.
-CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1 claude plugin marketplace add hakula139/plugins
-```
+Fetch marketplace changes and apply them to the installed plugin.
 
 ```bash
-# Fetch marketplace changes and apply them to the installed plugin.
 claude plugin marketplace update hakula-plugins
 claude plugin update hakula-workflow@hakula-plugins
 ```
 
 ### Codex
 
+Add the marketplace and install the workflow plugin.
+
 ```bash
-# Add the marketplace and install the workflow plugin.
 codex plugin marketplace add hakula139/plugins
 codex plugin add hakula-workflow@hakula-plugins
+```
 
-# Fetch marketplace changes and refresh the installed plugins.
+Fetch marketplace changes and refresh the installed plugins.
+
+```bash
 codex plugin marketplace upgrade hakula-plugins
 ```
 
 ### OMP
 
+Add the marketplace and install the workflow plugin.
+
 ```bash
-# Add the marketplace and install the workflow plugin.
 omp plugin marketplace add hakula139/plugins
 omp plugin install hakula-workflow@hakula-plugins
+```
 
-# These plugins have no versions, so omp plugin upgrade skips their updates.
-# Update the marketplace and force a reinstall to take later changes.
+These plugins have no versions, so taking later changes requires a marketplace update and a forced reinstall.
+
+```bash
 omp plugin marketplace update
 omp plugin install --force hakula-workflow@hakula-plugins
 ```
@@ -85,8 +88,9 @@ home.packages = [
 ];
 ```
 
+Install `clean-gone` outside Home Manager.
+
 ```bash
-# Install the command outside Home Manager.
 nix profile install github:hakula139/plugins#clean-gone
 ```
 
