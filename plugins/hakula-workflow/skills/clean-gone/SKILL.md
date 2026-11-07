@@ -1,43 +1,25 @@
 ---
 name: clean-gone
 description: >-
-  Remove finished local Git branches and stale linked worktrees with the `clean-gone` command,
-  moving agent memory into the main checkout. Use when asked to clean up merged branches or
-  worktrees, after a PR / MR merges or closes, or when git branch reports gone upstreams.
-compatibility: Requires Nushell 0.116 or later, Git, lsof, ssh, and gh or glab
+  Remove finished local Git branches and stale linked worktrees while preserving useful local
+  contents. Use when asked to clean up merged branches or worktrees, after a PR / MR merges or
+  closes, or when git branch reports gone upstreams.
 ---
 
 # Clean Gone Branches
 
-Remove finished branches and stale worktrees while protecting work in progress. The `clean-gone` command applies its plan by default. To discard an unwanted worktree, follow the `git-workflow` skill.
+Clean up the branches and worktrees covered by the task and its existing authorization. Keep unrelated ongoing work and coordinate with any owner before changing a worktree another session may use.
 
-If `clean-gone` or the repository's forge CLI is missing, enter a Nix shell:
+## Assess
 
-```bash
-nix shell github:hakula139/plugins#clean-gone nixpkgs#gh
-```
+Inspect the relevant Git refs, worktree contents, forge state, and owner or session information needed to decide whether the work is finished. Refresh remote information when that decision depends on it. A merged or closed request does not establish that later commits or uncommitted changes can be discarded. Account for squash merges when comparing completed work with the target branch.
 
-Its Nix package includes Nushell, Git, lsof, and ssh. Use `nixpkgs#glab` in place of `nixpkgs#gh` for GitLab. The forge CLI still needs the environment's authentication.
+## Preserve and remove
 
-## Workflow
+Before removing a worktree, inspect tracked, untracked, and ignored contents for work worth keeping, including agent memory and plans. Move useful contents to a retained checkout or another durable location. Preserve same-name conflicts as complete separate files and report their destinations. Keep unpublished commits reachable. Ask when removing contents or commits would exceed the task's authorization.
 
-1. Confirm the repository and refresh remote-tracking refs, since unpublished commits and gone upstreams are judged against the last fetch. Stop if any required fetch fails.
+Choose suitable Git or Workmux commands for the targets, using Workmux for worktrees it manages so its bookkeeping remains consistent. Keep the main checkout and leave the current worktree before removing it. Do not delete remote branches without explicit authorization.
 
-   ```bash
-   git rev-parse --show-toplevel
-   git fetch --all --prune
-   ```
+## Verify and report
 
-2. Run `clean-gone` as its own command to sweep the repository. If `clean-gone` is not on `PATH`, run this skill's `scripts/clean-gone.nu` with `nu --no-config-file` from inside the repository. Preview with `--dry-run` when unsure. A raw `git worktree remove` leaves its branch behind and skips the agent-memory move, so let `clean-gone` remove finished worktrees.
-
-   It prunes worktrees whose directory is gone, first unlocking any that an exited session or this session locked, and skips a missing one that another lock holds. Then it checks every other linked worktree except the current one. It skips a worktree that a running process or another live session's lock holds, and one that this session's lock holds unless its branch is finished. Before removing a worktree, it moves the ignored files under its `.claude/agent-memory-local/` and `.agents/plans/` into the main checkout, copying missing files and appending missing lines without overwriting anything. Then:
-
-   - **Finished**: the newest PR / MR of the branch is merged or closed, and its head contains the branch tip. The worktree is removed even with uncommitted work, and the branch is deleted.
-   - **Open PR / MR**: the worktree is kept untouched.
-   - **Uncommitted work**: the worktree is skipped with the age of its newest change.
-   - **Idle for over a day**: a clean detached worktree is removed when a branch or remote-tracking ref holds its HEAD. A clean worktree on a branch is removed, and its branch is deleted only when every commit is on a remote.
-   - **No worktree**: a finished branch is deleted, and so is one without an open PR / MR whose commits are all on a remote once its last commit is over a day old. A branch with unpublished commits is never deleted, and it is skipped for review once its upstream is gone or its last commit is over a day old.
-
-3. Follow up on each line that ends with "Review whether it needs an MR." Inspect each flagged item, then open a PR / MR for work worth keeping when the task authorizes follow-up changes in that repository, or report it to the user. Never discard uncommitted work unless the user names it.
-
-4. Report the worktrees and branches removed or skipped and the reason for each remaining skip. Removing a skipped worktree or branch another way needs the user's approval.
+Read back the remaining worktrees, directories, and refs. After a denied or interrupted removal, inspect its actual outcome before retrying. Report what was removed, what was preserved and where, and what remains with its reason.

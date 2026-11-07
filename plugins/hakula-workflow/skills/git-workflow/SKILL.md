@@ -115,8 +115,7 @@ Pass an edited body through a file or structured argument, then read the issue b
 
 When work finishes, clean up within the authorization above, and include the cleanup in the operator's spawn prompt after an approved merge when an `operator` agent is available.
 
-- Remove finished worktrees and branches by running `clean-gone` as its own command, which sweeps the repository. It moves agent memory and plans into the main checkout first, and the `clean-gone` skill describes what it removes and keeps.
-- Resolve each skip at its cause, and ask the user before removing a skipped worktree or branch another way. Treat a denied or interrupted removal as an unknown outcome and reread `git worktree list` before retrying.
+- Use the `clean-gone` skill to remove finished local branches and worktrees.
 - Delete a remote branch only when explicitly requested.
 - Delete completed plans and working notes from the plans directory, such as a gitignored `.agents/plans/`. Rewrite stale notes to show only the current state and remaining work.
 - Each agent removes the scratch copies and build directories it created, such as `git archive` exports and their `CARGO_TARGET_DIR`s under `/tmp`, and names in its report anything it leaves for someone else.

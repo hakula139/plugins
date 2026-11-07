@@ -31,7 +31,6 @@
   # ------------------------------------------------------------------------------------------------
   outputs =
     {
-      self,
       nixpkgs,
       devkit,
       ...
@@ -69,34 +68,12 @@
       in
       {
         # ------------------------------------------------------------------------------------------
-        # Packages
-        # ------------------------------------------------------------------------------------------
-        packages.clean-gone = dk.mkNuApplication {
-          pname = "clean-gone";
-          version = "0-unstable-${lib.substring 0 8 self.lastModifiedDate}";
-          src = ./plugins/hakula-workflow/skills/clean-gone/scripts;
-          runtimeInputs = [
-            pkgs.git
-            pkgs.lsof
-            pkgs.openssh
-          ];
-
-          meta = {
-            description = "Remove finished local Git branches and stale linked worktrees";
-            homepage = "https://github.com/hakula139/plugins";
-            license = lib.licenses.mit;
-            platforms = lib.platforms.all;
-          };
-        };
-
-        # ------------------------------------------------------------------------------------------
         # Dev shell
         # ------------------------------------------------------------------------------------------
         devShells.default = pkgs.mkShell {
           name = "plugins-dev";
           packages = [
             dk.nushell
-            dk.nu-test
           ];
           inputsFrom = [
             preCommit.shell
@@ -108,13 +85,6 @@
         # ------------------------------------------------------------------------------------------
         checks = {
           pre-commit = preCommit.check;
-          package = self.packages.${system}.clean-gone;
-
-          tests = dk.nuTests {
-            src = ./plugins;
-            runtimeInputs = [ pkgs.git ];
-          };
-
           skills =
             let
               source = lib.fileset.toSource {
