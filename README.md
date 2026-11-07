@@ -22,30 +22,50 @@ Several skills refer to each other by name, such as `review` to `git-workflow`, 
 
 ### Claude Code
 
+Add the marketplace and install the workflow plugin:
+
 ```bash
 claude plugin marketplace add hakula139/plugins
 claude plugin install hakula-workflow@hakula-plugins
 ```
 
-Claude Code clones the marketplace over SSH when `ssh -T git@github.com` succeeds, and `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` makes it clone over HTTPS instead. `claude plugin marketplace update hakula-plugins` fetches later changes, and `claude plugin update hakula-workflow@hakula-plugins` applies them.
+Fetch marketplace changes and apply them to the installed plugin:
+
+```bash
+claude plugin marketplace update hakula-plugins
+claude plugin update hakula-workflow@hakula-plugins
+```
 
 ### Codex
+
+Add the marketplace and install the workflow plugin:
 
 ```bash
 codex plugin marketplace add hakula139/plugins
 codex plugin add hakula-workflow@hakula-plugins
 ```
 
-`codex plugin marketplace upgrade hakula-plugins` fetches later changes and refreshes the installed plugins.
+Fetch marketplace changes and refresh the installed plugins:
+
+```bash
+codex plugin marketplace upgrade hakula-plugins
+```
 
 ### OMP
+
+Add the marketplace and install the workflow plugin:
 
 ```bash
 omp plugin marketplace add hakula139/plugins
 omp plugin install hakula-workflow@hakula-plugins
 ```
 
-`omp plugin upgrade` skips a plugin whose version has not changed, which these never do, so take later changes with `omp plugin marketplace update` and `omp plugin install --force hakula-workflow@hakula-plugins`.
+These plugins have no versions, so taking later changes requires a marketplace update and a forced reinstall:
+
+```bash
+omp plugin marketplace update
+omp plugin install --force hakula-workflow@hakula-plugins
+```
 
 ### Nix
 
@@ -68,7 +88,11 @@ home.packages = [
 ];
 ```
 
-Outside Home Manager, `nix profile install github:hakula139/plugins#clean-gone` installs the command.
+Install `clean-gone` outside Home Manager:
+
+```bash
+nix profile install github:hakula139/plugins#clean-gone
+```
 
 ## Development
 
