@@ -41,6 +41,6 @@ Check whether a candidate is in use before treating it as safe. `find <path> \( 
 - **Docker**: `docker image prune -a -f` removes images that no container uses. Leave volumes to the user because they hold data.
 - **Nix store**: `sudo nix-collect-garbage --delete-older-than 3d`, or `nh clean all --keep 5 --keep-since 3d` where `nh` is installed, deletes older system generations and collects their garbage while keeping recent rollbacks. It requires sudo, so give the command to the user. The user's own profile generations need the same `nix-collect-garbage` command run without sudo.
 - **Local snapshots**: `tmutil deletelocalsnapshots <date>` frees space used by a snapshot. It requires the user's decision and sudo, so give them the command too.
-- **Agent worktrees**: Remove finished ones with `clean-gone` as the `git-workflow` skill's Cleanup section describes, which keeps branch bookkeeping and agent memory consistent. To discard an unwanted worktree, follow the `git-workflow` skill.
+- **Agent worktrees**: Use the `clean-gone` skill to remove finished agent worktrees, preserving branch bookkeeping and useful local contents.
 
 Show the user the sizes and exact commands for items in the "needs the user's decision" group, then wait for them to choose. Report the space freed using a fresh `df -h`, and note that a local snapshot may keep the space unavailable until thinned.

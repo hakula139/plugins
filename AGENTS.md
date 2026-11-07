@@ -11,7 +11,7 @@ plugins holds Hakula's agent skills, grouped into plugins that coding agents ins
 ├── .github/           # Renovate config and the CI workflow
 ├── nix/               # The skill check
 ├── plugins/           # One directory per plugin, with its manifest and skills
-├── flake.nix          # `lib.skills`, the clean-gone package, checks, and the dev shell
+├── flake.nix          # `lib.skills`, checks, and the dev shell
 └── README.md          # What the plugins hold and how to install them
 ```
 

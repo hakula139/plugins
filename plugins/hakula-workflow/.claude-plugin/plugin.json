@@ -1,6 +1,6 @@
 {
   "name": "hakula-workflow",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Git, release, review, and code-layout conventions for coding agents",
   "author": { "name": "Hakula", "url": "https://hakula.xyz" },
   "repository": "https://github.com/hakula139/plugins",
