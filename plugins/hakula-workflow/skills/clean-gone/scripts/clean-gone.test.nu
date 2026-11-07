@@ -355,29 +355,32 @@ def "test a worktree in use is kept even when its branch is finished" [] {
     }
   ]
 
-  for case in ($cases | enumerate) {
-    let repo = (make-repo)
-    let tip = (git-in $repo.main rev-parse origin/main)
-    let worktree = (add-worktree $repo "wt")
-    make-dirty $worktree
-    if $case.item.lock != null {
-      if ($case.item.lock | is-empty) {
-        git-in $repo.main worktree lock $worktree
-      } else {
-        git-in $repo.main worktree lock --reason $case.item.lock $worktree
+  try {
+    for case in ($cases | enumerate) {
+      let repo = (make-repo)
+      let tip = (git-in $repo.main rev-parse origin/main)
+      let worktree = (add-worktree $repo "wt")
+      make-dirty $worktree
+      if $case.item.lock != null {
+        if ($case.item.lock | is-empty) {
+          git-in $repo.main worktree lock $worktree
+        } else {
+          git-in $repo.main worktree lock --reason $case.item.lock $worktree
+        }
       }
+      let open = (lsof-listing $case.item.processes | str replace --all "{wt}" $worktree)
+      let requests = [(mr 1 "feat/wt" "merged" $tip)]
+
+      let result = (clean $repo --requests $requests --open $open)
+
+      let expected = ($case.item.lines | each { str replace "{wt}" $worktree })
+      assert equal $result.lines $expected $case.item.name
+      assert equal $result.exit_code 1 $case.item.name
+      assert-kept $repo $worktree "feat/wt" $case.item.name
     }
-    let open = (lsof-listing $case.item.processes | str replace --all "{wt}" $worktree)
-    let requests = [(mr 1 "feat/wt" "merged" $tip)]
-
-    let result = (clean $repo --requests $requests --open $open)
-
-    let expected = ($case.item.lines | each { str replace "{wt}" $worktree })
-    assert equal $result.lines $expected $case.item.name
-    assert equal $result.exit_code 1 $case.item.name
-    assert-kept $repo $worktree "feat/wt" $case.item.name
+  } finally {
+    ^kill $live
   }
-  ^kill $live
 }
 
 def "test a lock is released for an exited session or a finished branch of this session" [] {
