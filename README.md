@@ -16,7 +16,7 @@ The `hakula-plugins` marketplace holds four plugins. Each skill is a self-contai
 | `hakula-tools`     | `ast-grep`, `browser-debugging`, `cspell`, `disk-cleanup`, `find-docs`, `frontend-design`, `read-pdfs` |
 | `hakula-agents`    | `acp-delegate`, `dream`, `harness-repair`, `model-delegation`                                          |
 
-Several skills refer to each other by name, such as `review` to `git-workflow`, so install `hakula-workflow` beside any other plugin. The plugins track `main` and carry no versions.
+Several skills refer to each other by name, such as `review` to `git-workflow`, so install `hakula-workflow` beside any other plugin.
 
 ## Install
 
@@ -60,11 +60,11 @@ omp plugin marketplace add hakula139/plugins
 omp plugin install hakula-workflow@hakula-plugins
 ```
 
-These plugins have no versions, so taking later changes requires a marketplace update and a forced reinstall:
+Fetch marketplace changes and upgrade the installed plugins:
 
 ```bash
 omp plugin marketplace update
-omp plugin install --force hakula-workflow@hakula-plugins
+omp plugin upgrade
 ```
 
 ### Nix
