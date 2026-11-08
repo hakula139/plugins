@@ -4,6 +4,7 @@ attrsets
 cachix
 devkit
 direnv
+doctoc
 dtcg
 duarte
 enxio
@@ -31,6 +32,7 @@ résumés
 sgconfig
 shfmt
 slideuments
+statix
 stdenv
 substituters
 taiki
