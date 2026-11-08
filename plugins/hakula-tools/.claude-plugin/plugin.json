@@ -1,6 +1,6 @@
 {
   "name": "hakula-tools",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Structural search, browser debugging, spelling, disk cleanup, documentation lookup, frontend design, and PDF reading for coding agents",
   "author": { "name": "Hakula", "url": "https://hakula.xyz" },
   "repository": "https://github.com/hakula139/plugins",

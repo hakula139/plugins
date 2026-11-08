@@ -69,7 +69,7 @@ omp plugin upgrade
 
 ### Nix
 
-The flake exports `lib.skills`, which maps each skill name to its directory with the tests and stubs left out, and `packages.<system>.clean-gone`, the command the `clean-gone` skill runs. A Home Manager module can link every skill into a client's skills directory:
+The flake exports `lib.skills`, which maps each skill name to its directory with the tests and stubs left out. A Home Manager module can link every skill into a client's skills directory:
 
 ```nix
 plugins = {
@@ -82,16 +82,6 @@ plugins = {
 home.file = lib.mapAttrs' (
   name: source: lib.nameValuePair ".claude/skills/${name}" { inherit source; }
 ) inputs.plugins.lib.skills;
-
-home.packages = [
-  inputs.plugins.packages.${pkgs.stdenv.hostPlatform.system}.clean-gone
-];
-```
-
-Install `clean-gone` outside Home Manager:
-
-```bash
-nix profile install github:hakula139/plugins#clean-gone
 ```
 
 ## Development
