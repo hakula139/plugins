@@ -10,7 +10,7 @@ description: >-
 
 Read the repository's release contract, such as `RELEASING.md` or `docs/releasing.md`, for its version policy and files, notes source, checks, publishing targets, and recovery restrictions. Follow `git-workflow` for branches, PRs, and approved merges. Use existing GitHub authentication through `gh`. Changelog drafting also requires Nix and Nushell.
 
-For shared release tooling, resolve a local released devkit source from the environment or the repository's locked input, using `nix flake archive --json` when needed. When neither supplies one, obtain the [released v1 source][devkit-source]. Read that source's `docs/releasing.md` for the script and publishing interfaces you use.
+For shared release tooling, resolve a local released devkit source from the environment or the repository's locked input, using `nix flake archive --json` when needed. When neither supplies one, obtain the [released v1 source](https://github.com/hakula139/devkit/tree/v1). Read that source's `docs/releasing.md` for the script and publishing interfaces you use.
 
 ## Prepare the release PR
 
@@ -21,8 +21,6 @@ For shared release tooling, resolve a local released devkit source from the envi
    ```bash
    <devkit-source>/scripts/changelog.nu vX.Y.Z
    ```
-
-   The script uses the repository's `cliff.toml` when present and otherwise uses devkit's shared template. It handles repository selection and prerelease ranges internally. The shared template drafts `feat`, `fix`, `perf`, and titles marked with `!`, with stable release ranges covering their prereleases.
 
    When the repository's template supports highlights, pass a Markdown file:
 
@@ -59,5 +57,3 @@ Let in-flight publishing finish and inspect each destination before retrying. Re
 After a notes correction merges, use the repository's republish workflow when available. For changelog-based GitHub notes without one, use devkit's `scripts/github.nu release-notes OWNER/REPO <tag>` from the target repository root, with its documented dependencies available. Other notes sources follow the repository's correction procedure.
 
 Report the release PR and published URLs, verification results, and incomplete targets.
-
-[devkit-source]: https://github.com/hakula139/devkit/tree/v1
