@@ -22,7 +22,7 @@ For shared release tooling, resolve a local released devkit source from the envi
    <devkit-source>/scripts/changelog.nu vX.Y.Z
    ```
 
-   The script uses the repository's `cliff.toml` when present and otherwise uses devkit's shared template. It handles repository selection and prerelease ranges internally. The shared template drafts `feat`, `fix`, `perf`, and breaking changes, with stable release ranges covering their prereleases.
+   The script uses the repository's `cliff.toml` when present and otherwise uses devkit's shared template. It handles repository selection and prerelease ranges internally. The shared template drafts `feat`, `fix`, `perf`, and titles marked with `!`, with stable release ranges covering their prereleases.
 
    When the repository's template supports highlights, pass a Markdown file:
 
