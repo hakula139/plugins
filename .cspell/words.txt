@@ -39,4 +39,5 @@ taiki
 tmutil
 tufte
 unreviewed
+wakatime
 wcag
