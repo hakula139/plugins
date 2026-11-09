@@ -19,12 +19,9 @@ nuon
 pcpu
 pdfs
 pdftoppm
-pids
 pkgs
 pmem
-pname
 poppler
-ppid
 raine
 regenerable
 retarget
@@ -33,9 +30,7 @@ sgconfig
 shfmt
 slideuments
 statix
-stdenv
 substituters
-taiki
 tmutil
 tufte
 unreviewed
