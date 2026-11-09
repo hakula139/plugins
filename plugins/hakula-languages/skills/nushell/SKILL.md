@@ -65,7 +65,7 @@ Test a script with `std/assert` when its output is easy to get subtly wrong. Dri
 
 ### The nu-test runner
 
-devkit's [`nu-test`](https://github.com/hakula139/devkit/blob/v1/docs/nu-test.md) runs each command named `test <behavior>` in a `.test.nu` file as one test:
+devkit's [`nu-test`](https://github.com/hakula139/devkit/blob/v2/docs/nu-test.md) runs each command named `test <behavior>` in a `.test.nu` file as one test:
 
 - **Names**: a test name may hold only letters, digits, spaces, and `,.:-`, since the runner passes it to `nu --commands` as source text, where a quote, `;`, or `#` ends or breaks the command.
 - **One process per test**: the tests run in parallel, each in its own `nu` process, so a test that changes its environment or exits cannot affect the others.
