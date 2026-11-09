@@ -1,9 +1,8 @@
 ---
 name: release
 description: >-
-  Prepare a repository release PR, draft and curate its notes, publish the approved tag, follow
-  publishing, and correct published notes. Use when asked to release, tag, or ship a version,
-  or to fix a published release's notes.
+  Prepare a repository release PR, draft and curate its notes, publish the approved tag, and
+  follow publishing. Use when asked to release, tag, or ship a version.
 ---
 
 # Release
@@ -50,23 +49,8 @@ Prepare and verify the PR before requesting merge approval. Get approval to publ
 
 Watch publishing through completion. Verify the declared notes source, prerelease status, and every expected artifact or registry package. Follow the repository's publishing interfaces and CI gates.
 
-## Recover or correct notes
+## Recover
 
 Let in-flight publishing finish and inspect each destination before retrying. Respect registry and tag immutability. Get explicit approval before deleting a release or moving a published tag, and prefer rerunning supported failed jobs at the same commit.
-
-After a notes correction merges, use the repository's republish workflow when available. For changelog-based GitHub notes without one, fetch `parse-changelog` and, from the target repository root, edit the release only if the parse succeeds, replacing `x86_64-unknown-linux-musl` with your system's target, such as `aarch64-apple-darwin`:
-
-```bash
-dir=$(mktemp -d)
-gh release download \
-  -R taiki-e/parse-changelog \
-  -p 'parse-changelog-x86_64-unknown-linux-musl.tar.gz' \
-  --dir "$dir"
-tar -xzf "$dir"/parse-changelog-*.tar.gz -C "$dir"
-"$dir/parse-changelog" CHANGELOG.md X.Y.Z >"$dir/notes.md" \
-  && gh release edit vX.Y.Z --notes-file "$dir/notes.md"
-```
-
-Other notes sources follow the repository's correction procedure.
 
 Report the release PR and published URLs, verification results, and incomplete targets.
