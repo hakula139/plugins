@@ -38,7 +38,7 @@ For a filtering repair, compare the actual processed-file inventories in ordinar
 Then classify the token:
 
 - **A new misspelling in authored prose or identifiers**: Fix it when that is safe. For a historical API field, compatibility name, or path, inspect callers and migration requirements before renaming. Suggestions hint at corrections but do not prove a token is a word.
-- **An unfamiliar name or technical term**: Verify it against its defining source or official documentation, checking identifier boundaries, neighboring uses, and the expected meaning. A token from an APK, generated source, or a dependency can still be an upstream typo.
+- **An unfamiliar name or technical term**: Verify it against its defining source or official documentation, checking identifier boundaries, neighboring uses, and the expected meaning. A token from an APK, generated source, or a dependency can still be an upstream typo. Once verified, add the term to the accepted-word dictionary and keep the prose as written, since rewording to avoid the checker makes the text less precise. Reword only when the token is a typo or the prose is unclear.
 - **A fragment of a long name**: Check existing language dictionaries and identifier splitting first, and never add every unknown substring a bulk extraction returns.
 - **A required misspelling**: Preserve its exact bytes where changing them would break a contract, compatibility, source citation, path, or evidence record, including in project-owned names. Use the correct spelling in your explanation and record the source and intended correction where the exception needs maintaining.
 
