@@ -1,16 +1,15 @@
 ---
 name: release
 description: >-
-  Prepare a repository release PR, draft and curate its notes, publish the approved tag, follow
-  publishing, and correct published notes. Use when asked to release, tag, or ship a version,
-  or to fix a published release's notes.
+  Prepare a repository release PR, draft and curate its notes, publish the approved tag, and
+  follow publishing. Use when asked to release, tag, or ship a version.
 ---
 
 # Release
 
-Read the repository's release contract, such as `RELEASING.md` or `docs/releasing.md`, for its version policy and files, notes source, checks, publishing targets, and recovery restrictions. Follow `git-workflow` for branches, PRs, and approved merges. Use existing GitHub authentication through `gh`. Changelog drafting also requires Nix and Nushell.
+Read the repository's release contract, such as `RELEASING.md` or `docs/releasing.md`, for its version policy and files, notes source, checks, publishing targets, and recovery restrictions. Follow `git-workflow` for branches, PRs, and approved merges. Use existing GitHub authentication through `gh`. Changelog drafting also requires Nix.
 
-For shared release tooling, resolve a local released devkit source from the environment or the repository's locked input, using `nix flake archive --json` when needed. When neither supplies one, obtain the [released v1 source](https://github.com/hakula139/devkit/tree/v1). Read that source's `docs/releasing.md` for the script and publishing interfaces you use.
+For shared release tooling, read devkit's [release guide](https://github.com/hakula139/devkit/blob/v2/docs/releasing.md) for the script and publishing interfaces you use.
 
 ## Prepare the release PR
 
@@ -19,13 +18,13 @@ For shared release tooling, resolve a local released devkit source from the envi
 2. Prepare the declared notes source. For a maintained `CHANGELOG.md`, run devkit's released draft script from the target repository's root:
 
    ```bash
-   <devkit-source>/scripts/changelog.nu vX.Y.Z
+   nix run github:hakula139/devkit/v2#changelog -- vX.Y.Z
    ```
 
    When the repository's template supports highlights, pass a Markdown file:
 
    ```bash
-   <devkit-source>/scripts/changelog.nu vX.Y.Z --highlights highlights.md
+   nix run github:hakula139/devkit/v2#changelog -- vX.Y.Z --highlights highlights.md
    ```
 
    For generated GitHub notes or annotated-tag notes, prepare that source as the repository specifies.
@@ -50,10 +49,8 @@ Prepare and verify the PR before requesting merge approval. Get approval to publ
 
 Watch publishing through completion. Verify the declared notes source, prerelease status, and every expected artifact or registry package. Follow the repository's publishing interfaces and CI gates.
 
-## Recover or correct notes
+## Recover
 
 Let in-flight publishing finish and inspect each destination before retrying. Respect registry and tag immutability. Get explicit approval before deleting a release or moving a published tag, and prefer rerunning supported failed jobs at the same commit.
-
-After a notes correction merges, use the repository's republish workflow when available. For changelog-based GitHub notes without one, use devkit's `scripts/github.nu release-notes OWNER/REPO <tag>` from the target repository root, with its documented dependencies available. Other notes sources follow the repository's correction procedure.
 
 Report the release PR and published URLs, verification results, and incomplete targets.
