@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/hakula139/plugins/actions/workflows/ci.yml/badge.svg)](https://github.com/hakula139/plugins/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+![WakaTime coding time for plugins](https://wakatime.com/badge/user/f4a35a1f-0e29-4093-a647-e66aad164737/project/aea7f1e0-c17c-4924-836b-3756b8988845.svg)
 
 Hakula's agent skills, packaged as plugins for Claude Code, Codex, and OMP.
 
