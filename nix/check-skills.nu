@@ -63,7 +63,7 @@ def skill-errors [skill: path]: nothing -> list<string> {
 
 def plugin-errors [root: path, entry: record]: nothing -> list<string> {
   let source = $"./plugins/($entry.name)"
-  let manifest = ($root | path join "plugins" $entry.name ".claude-plugin" "plugin.json")
+  let manifest = ($root | path join "plugins" $entry.name ".claude-plugin/plugin.json")
   [
     (if $entry.source != $source {
       $"marketplace.json: ($entry.name) has source ($entry.source | to nuon), expected ($source)"
