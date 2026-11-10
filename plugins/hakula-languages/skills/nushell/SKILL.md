@@ -13,6 +13,7 @@ description: >-
 - **Help**: limit the script header to its purpose and operating constraints, and document usage at each command and parameter so `--help` carries it.
 - **Quoting**: quote string values, including paths and path segments, so they read as data. Leave names, flags, subcommands, and a builtin's own words bare, as in `decode utf-8`. Leave a glob meant to expand bare, and build a home path from `$nu.home-dir` because a quoted `~` stays literal. Keep the quotes any word needs to stay a literal string, as in `"0700"` and `"1min"`.
 - **Path joins**: pass a literal relative path to `path join` as one `/`-separated string, as in `path join "libexec/gnubin"`, so it reads as the path it names, and give each segment that comes from a variable its own argument.
+- **Script-relative paths**: locate files beside a script through a named constant at the top, as in `const SCRIPT_DIR = path self "."`, and join paths onto it. `path self` runs only at parse time and names the file it appears in, while `$env.CURRENT_FILE` names the running script even inside a module.
 - **Multiline strings**: align the opening quote, content, and closing quote at the same column, then place `| str dedent` from `std-rfc/str` on the next line and any enclosing parenthesis on its own line.
 - **Custom commands**: their switches stay on one line, as a builtin's do, since Nushell parses them itself.
 
