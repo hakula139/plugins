@@ -17,11 +17,11 @@ description: >-
 ### Modules and imports
 
 - **Modules**: export only what another module or the module's own test calls, and keep other helpers private. Layer modules so imports point one way, with the entry importing domain modules and domain modules importing generic helpers.
-- **Imports**: import a module by name when its commands share verbs with sibling modules, so calls read like `cache read` and `index read`. Otherwise list the imported commands, as in `use ./paths.nu [path-map path-match]`, so a reader sees where each name comes from. A test may `use ./<module>.nu *`.
+- **Imports**: import a module by name when its commands share verbs with sibling modules, so calls read like `cache read` and `index read`. Otherwise list the imported commands, as in `use ./paths.nu [path-split path-label]`, so a reader sees where each name comes from. A test may `use ./<module>.nu *`.
 
 ### Layout and order
 
-- **Order**: order a module's sections as the pipeline first reaches them, and within a section put callees before callers. A test file follows its module's order.
+- **Order**: order a module's sections in the order the entry first calls them, and within a section put callees before callers.
 - **Custom commands**: their switches stay on one line, as a builtin's do, since Nushell parses them itself.
 
 ### Quoting and strings
@@ -38,7 +38,12 @@ description: >-
 
 These traps assume the Nushell Book's [Thinking in Nu](https://www.nushell.sh/book/thinking_in_nu.html) and [Coming from Bash](https://www.nushell.sh/book/coming_from_bash.html). Reproduce a trap on the pinned Nushell before adding it.
 
-### Parsing and data
+### Syntax
+
+- **Bare words depend on context.** `where after != before` compares the `after` column with the string `"before"` (write `where after != $it.before`), and a comma splits a list item, so `[--sort=-pcpu,-pmem]` holds two items. Inside a list, an operator is a bare word too, so `["a" + $x]` holds three elements. Write `[("a" + $x)]` or `[$"a($x)"]`.
+- **Outside parentheses or a list, a newline ends the command.** Arguments continue across lines only inside parentheses or a list, binary operators continue only inside parentheses, and a line starting with `|` continues the pipeline. A line starting with `and ($b)` calls a command named `and`, so wrap the whole expression in parentheses.
+
+### Data and types
 
 #### Input formats
 
@@ -52,19 +57,14 @@ These traps assume the Nushell Book's [Thinking in Nu](https://www.nushell.sh/bo
 - **Return annotations do not validate dynamic output.** A `-> record` function can return a list from an untyped helper, and `get -o` on an empty list returns `[]`, which `default` keeps.
 - **A `mut` or a defaulted closure parameter takes the type of its initial value.** Each later value is checked against that type, at parse time when its type is known and at runtime otherwise, so `mut current = null` rejects a record, `mut n = 0` rejects a float, and `generate {|row, acc = null| ... }` raises `Can't convert to nothing` once it passes `acc` a value. Annotate the union, as in `mut current: oneof<record, nothing> = null`, because a linter misses the runtime case.
 
-#### Streams and commands
+#### Commands
 
-- **`get <n>`, `last`, and `skip` run every item of a stream and drop errors from the items they skip** ([nushell/nushell#19463](https://github.com/nushell/nushell/issues/19463)). An `exit` or `error make` in a closure on a skipped item is discarded and the script continues, so only output the closure printed first, such as a `die` helper's message, still appears. Take a match with `first`, which stops pulling once it has one item and returns null on an empty stream.
+- **A command that pulls a stream item and discards it drops that item's `exit` or `error make`.** `get <n>`, `last`, `skip`, `drop`, and `select` all do ([nushell/nushell#19463](https://github.com/nushell/nushell/issues/19463)), and [nushell/nushell#19467](https://github.com/nushell/nushell/pull/19467) lists the affected commands. The script continues, so only output the closure printed first, such as a `die` helper's message, still appears. `collect` before the command surfaces the error. Take a single match with `first`, which stops pulling once it has one item and returns null on an empty stream.
 - **`math sum` errors on an empty list.** Use `| append 0 | math sum`.
-- **`into datetime` reads a bare integer as nanoseconds.** A Unix timestamp in seconds needs `into datetime --format '%s'`.
+- **`into datetime` reads a bare integer as nanoseconds.** A Unix timestamp in seconds needs `into datetime --format "%s"`.
 - **`update` binds a named closure parameter to the row, not the cell.** Read the cell value from `$in`, as in `update body { $in | append $line }`.
 
 ### Strings and arguments
-
-#### Syntax
-
-- **Bare words depend on context.** `where after != before` compares the `after` column with the string `"before"` (write `where after != $it.before`), and a comma splits a list item, so `[--sort=-pcpu,-pmem]` holds two items. Inside a list, an operator is a bare word too, so `["a" + $x]` holds three elements. Write `[("a" + $x)]` or `[$"a($x)"]`.
-- **Outside parentheses or a list, a newline ends the command.** Arguments continue across lines only inside parentheses or a list, binary operators continue only inside parentheses, and a line starting with `|` continues the pipeline. A line starting with `and ($b)` calls a command named `and`, so wrap the whole expression in parentheses.
 
 #### Strings
 
@@ -78,23 +78,23 @@ These traps assume the Nushell Book's [Thinking in Nu](https://www.nushell.sh/bo
 - **`nu <script> <args>` re-parses the arguments as source text.** Nushell rebuilds the `main` call from the arguments, quoting one only when it holds whitespace or a special character such as `;` or starts with `$`, so an untyped `main` parameter receives `8` as an int. Three shapes stay code on the pinned Nushell ([nushell/nushell#19484](https://github.com/nushell/nushell/issues/19484)): the name part of a `--` argument before any `=`, even after a positional (`'--x;print INJECTED'` prints `INJECTED` when `main` accepts `--x` or the argument follows `--`); a bare redirection token (`'o>' out.txt` sends `main`'s output to `out.txt`, truncating it even when `main` only prints); and an argument starting with `...$` (`'...$env.PATH'` spreads `PATH` into the arguments). Never pass an untrusted string as a script argument. Pass it through stdin, an environment variable, or a file, or check it against an allowlist pattern first.
 - **A flag on `def main` does not reach `def "main <sub>"`.** `script sub --flag` fails with an unknown flag, and `script --flag sub` passes `sub` to `main` as a positional, so declare a shared flag on each subcommand.
 
-#### Environment
-
-- **`$nu.home-dir` ignores a `HOME` change inside the running Nushell.** It is fixed at startup, so code that runs after `$env.HOME = ...` or inside `with-env {HOME: ...}` in the same process reads `$env.HOME`. A child Nushell started with a new `HOME` sees it.
-
 ### External commands
 
 - **`cp` reports a refused read or write as `nu: <error>` and still succeeds.** Use `^cp` when that failure must raise an error.
 - **A nonzero external exit ends the script with that code and prints nothing.** Tolerate it with `try`, or by using `| complete` and checking `.exit_code`. Piping into `ignore` discards the exit status along with the output, so after `^cmd | ignore` the script continues and can exit 0.
 - **Reading stdin requires `^cat`.** `$in` is empty under a shebang that lacks `--stdin`, and reopening `/dev/stdin` fails with ENXIO on a socket. Text capture strips one trailing newline, so use `^cat | into binary` for byte-identical round trips.
 
+### Environment
+
+- **`$nu.home-dir` ignores a `HOME` change inside the running Nushell.** It is fixed at startup, so code that runs after `$env.HOME = ...` or inside `with-env {HOME: ...}` in the same process reads `$env.HOME`. A child Nushell started with a new `HOME` sees it.
+
 ## Testing
 
 Test a script with `std/assert` when its output is easy to get subtly wrong. Drive it the way its caller does, and skip tests that only restate the code or require the external tools the script exists to call. Run an entry script through `^$nu.current-exe`, which names the running Nushell binary, so the script runs on the same Nushell as its test.
 
-### Layout and assertions
+### Files and assertions
 
-- **Layout**: a test sits beside the module or entry script it tests as `<module>.test.nu`.
+- **Location**: a test sits beside the module or entry script it tests as `<name>.test.nu`.
 - **Assertions**: compare the whole shape a test owns in one `assert equal`, so an unexpected field or row fails it.
 
 ### Inputs and fixtures
@@ -109,7 +109,7 @@ Test a script with `std/assert` when its output is easy to get subtly wrong. Dri
 
   - Copy each input into a `mktemp` directory before running the script so the script never writes to a fixture.
 
-- **Timestamps**: fixtures use a fixed day in UTC, and a test that runs the script sets `TZ` for the child process, as in `with-env {TZ: "UTC"} { ^$nu.current-exe $script }`, so a local-time computation does not depend on the runner's zone.
+- **Timestamps**: fixtures use a fixed day in UTC, and a test that runs the script sets `TZ` for the child process, as in `with-env {TZ: "UTC"} { ^$nu.current-exe $script }`, so a local-time computation does not depend on the runner's zone, since the running Nushell reads its zone only at startup.
 
 ### The nu-test runner
 
