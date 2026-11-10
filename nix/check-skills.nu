@@ -81,7 +81,7 @@ def plugin-errors [root: path, entry: record]: nothing -> list<string> {
 def main [
   root: path # Repository root holding `.claude-plugin/` and `plugins/`
 ] {
-  let entries = (open ($root | path join ".claude-plugin" "marketplace.json")).plugins
+  let entries = (open ($root | path join ".claude-plugin/marketplace.json")).plugins
   let plugins = (directories ($root | path join "plugins"))
   let named = ($entries | get name | sort)
   let skill_dirs = ($plugins | each {|plugin| $root | path join "plugins" $plugin "skills" })
