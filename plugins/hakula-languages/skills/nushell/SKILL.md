@@ -55,6 +55,7 @@ These traps assume the Nushell Book's [Thinking in Nu](https://www.nushell.sh/bo
 
 - **`get -o` raises on rows that are not records.** It tolerates a missing column but fails on a list of strings or a scalar, so wrap it in `try` when the shape is unverified.
 - **Return annotations do not validate dynamic output.** A `-> record` function can return a list from an untyped helper, and `get -o` on an empty list returns `[]`, which `default` keeps.
+- **A body that ends in `error make` has output type `error`.** Declaring `: nothing -> nothing` on such a command, as a `die` helper might, fails at parse time with `Command output doesn't match nothing`, so the script never runs. Declare `: nothing -> error` or omit the signature. An `error make` inside an `if` branch, or followed by another expression, passes.
 - **A `mut` or a defaulted closure parameter takes the type of its initial value.** Each later value is checked against that type, at parse time when its type is known and at runtime otherwise, so `mut current = null` rejects a record, `mut n = 0` rejects a float, and `generate {|row, acc = null| ... }` raises `Can't convert to nothing` once it passes `acc` a value. Annotate the union, as in `mut current: oneof<record, nothing> = null`, because a linter misses the runtime case.
 
 #### Commands
