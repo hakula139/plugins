@@ -11,7 +11,10 @@ description: >-
 
 - **Entry point**: `def main` with typed parameters.
 - **Help**: limit the script header to its purpose and operating constraints, and document usage at each command and parameter so `--help` carries it.
-- **Quoting**: quote string values, including paths and path segments, so they read as data. Leave names, flags, subcommands, and a builtin's own words bare, as in `decode utf-8`. Leave a glob meant to expand bare, and build a home path from `$nu.home-dir` because a quoted `~` stays literal. Keep the quotes any word needs to stay a literal string, as in `"0700"` and `"1min"`.
+- **Modules**: export only what another module or the module's own test calls, and keep other helpers private. Layer modules so imports point one way, with the entry importing domain modules and domain modules importing generic helpers.
+- **Imports**: import a module by name when its commands share verbs with sibling modules, so calls read like `cache read` and `index read`. Otherwise list the imported commands, as in `use ./paths.nu [path-map path-match]`, so a reader sees where each name comes from. A test may `use ./<module>.nu *`.
+- **Order**: order a module's sections as the pipeline first reaches them, and within a section put callees before callers. A test file follows its module's order.
+- **Quoting**: quote string values, including paths and path segments, so they read as data. Use double quotes, switching to single quotes when the text holds a literal backslash or double quote, as a regex does. Leave names, flags, subcommands, and a builtin's own words bare, as in `decode utf-8`. Leave a glob meant to expand bare, and build a home path from `$nu.home-dir` because a quoted `~` stays literal. Keep the quotes any word needs to stay a literal string, as in `"0700"` and `"1min"`.
 - **Path joins**: pass a literal relative path to `path join` as one `/`-separated string, as in `path join "libexec/gnubin"`, so it reads as the path it names, and give each segment that comes from a variable its own argument.
 - **Script-relative paths**: locate files beside a script through a named constant at the top, as in `const SCRIPT_DIR = path self "."`, and join paths onto it. `path self` runs only at parse time and names the file it appears in, while `$env.FILE_PWD` and `$env.CURRENT_FILE` point at the running script even inside a module.
 - **Multiline strings**: align the opening quote, content, and closing quote at the same column, then place `| str dedent` from `std-rfc/str` on the next line and any enclosing parenthesis on its own line.
@@ -54,7 +57,11 @@ These traps assume the Nushell Book's [Thinking in Nu](https://www.nushell.sh/bo
 
 ## Testing
 
-Test a script with `std/assert` when its output is easy to get subtly wrong. Drive it the way its caller does, and skip tests that only restate the code or require the external tools the script exists to call.
+Test a script with `std/assert` when its output is easy to get subtly wrong. Drive it the way its caller does, and skip tests that only restate the code or require the external tools the script exists to call. Run an entry script through `^$nu.current-exe`, which names the running Nushell binary, so the script runs on the same Nushell as its test.
+
+- **Layout**: a test sits beside the module or entry script it tests as `<module>.test.nu`.
+
+- **Assertions**: compare the whole shape a test owns in one `assert equal`, so an unexpected field or row fails it.
 
 - **Structured inputs**: write JSON and JSONL test inputs as Nushell records and lists, serialized with `to json` for JSON or `to json --raw` per line for JSONL.
 
@@ -65,6 +72,8 @@ Test a script with `std/assert` when its output is easy to get subtly wrong. Dri
   - Keep small structured inputs in the test file.
 
   - Copy each input into a `mktemp` directory before running the script so the script never writes to a fixture.
+
+- **Timestamps**: fixtures use a fixed day in UTC, and a test that runs the script sets `TZ` for the child process, as in `with-env {TZ: "UTC"} { ^$nu.current-exe $script }`, so a local-time computation does not depend on the runner's zone.
 
 ### The nu-test runner
 
@@ -81,3 +90,5 @@ devkit's [`nu-test`](https://github.com/hakula139/devkit/blob/v3/docs/nu-test.md
 ## Linting
 
 `nu --ide-check` exits 0 even when it reports an error, printing diagnostics as JSON, so inspect the severities. Without a max-errors argument, it exits 1 before reading the file. Because it catches delimiter errors and local `def` arity mismatches but treats a mistyped command as an external call, run the script once for real.
+
+Don't format with `nufmt`. It reindents to four spaces by default, and even with `indent: 2` in its config it joins a pipeline split one stage per line, or a call split one option per line, back onto one line.

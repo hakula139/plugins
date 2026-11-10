@@ -14,6 +14,7 @@ hakula
 nixfmt
 nixos
 nixpkgs
+nufmt
 nums
 nuon
 pcpu
