@@ -38,7 +38,8 @@ These traps assume the Nushell Book's [Thinking in Nu](https://www.nushell.sh/bo
 - **Outside parentheses or a list, a newline ends the command.** Arguments continue across lines only inside parentheses or a list, binary operators continue only inside parentheses, and a line starting with `|` continues the pipeline. A line starting with `and ($b)` calls a command named `and`, so wrap the whole expression in parentheses.
 - **Dynamic regexes need single-quoted pieces.** Parentheses interpolate in both `$"..."` and `$'...'`, and double quotes consume backslashes, so concatenate them: `($label + ' (?<n>\d+)')`.
 - **Forwarding arguments needs `def --wrapped`.** A plain `def` parses flags in `...args` itself. `--wrapped` also passes `--help` through as an argument, so a command whose operands may start with `-` keeps a plain `def` and its callers pass `--`.
-- **A script argument starting with `--` is spliced into `main` unquoted.** On the pinned Nushell, `escape_for_script_arg` inserts an argument that starts with `--` and has no `=` into the `main ...` source line without quoting it, even after `--`, so `command -- '--x;print INJECTED'` runs `print INJECTED`. Callers must pass operands that cannot start with `--`, such as absolute paths.
+- **`nu <script> <args>` splices the arguments into a `main` call as source text.** Nushell parses each argument as a literal, so an untyped `main` parameter receives `8` as an int, and it quotes only some shapes, so a crafted argument can run as code. Never pass an untrusted string as a script argument. Pass it through stdin, an environment variable, or a file, or check it against an allowlist pattern first.
+- **A flag on `def main` does not reach `def "main <sub>"`.** `script sub --flag` fails with an unknown flag, and `script --flag sub` passes `sub` to `main` as a positional, so declare a shared flag on each subcommand.
 - **`url encode` escapes characters a URI keeps.** The default escapes every ASCII punctuation mark except `.`, `/`, and `:`, including the unreserved `-`, `_`, and `~`, and `--all` escapes those three as well. To match another encoder, pass only the characters it escapes through `url encode --all`.
 - **`$nu.home-dir` ignores a `HOME` change inside the running Nushell.** It is fixed at startup, so code that runs after `$env.HOME = ...` or inside `with-env {HOME: ...}` in the same process reads `$env.HOME`. A child Nushell started with a new `HOME` sees it.
 - **`str length` counts UTF-8 bytes by default.** `"中文字" | str length` returns 9 on the pinned Nushell. Pass `--chars` or `--grapheme-clusters` when a limit is written in characters.
@@ -46,7 +47,7 @@ These traps assume the Nushell Book's [Thinking in Nu](https://www.nushell.sh/bo
 ### External commands
 
 - **`cp` reports a refused read or write as `nu: <error>` and still succeeds.** Use `^cp` when that failure must raise an error.
-- **A nonzero external exit ends the script with that code and prints nothing.** Tolerate it with `try`, or by using `| complete` and checking `.exit_code`.
+- **A nonzero external exit ends the script with that code and prints nothing.** Tolerate it with `try`, or by using `| complete` and checking `.exit_code`. Piping into `ignore` discards the exit status along with the output, so after `^cmd | ignore` the script continues and can exit 0.
 - **Reading stdin requires `^cat`.** `$in` is empty under a shebang that lacks `--stdin`, and reopening `/dev/stdin` fails with ENXIO on a socket. Text capture strips one trailing newline, so use `^cat | into binary` for byte-identical round trips.
 
 ## Testing
