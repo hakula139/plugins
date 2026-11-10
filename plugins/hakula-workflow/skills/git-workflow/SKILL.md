@@ -19,7 +19,7 @@ Read the repository's contribution instructions before starting, and create work
 - **Publish completed changes by default.** For requested work and incidental environment repairs, commit the verified changes on a task branch, push them, and create or update a PR / MR before reporting completion, reusing the task's existing branch and request when appropriate.
 - **Clean up finished work by default.** You may remove a merged branch, or an abandoned branch whose commits all exist on a remote, together with its worktree once that worktree is verified clean. You may also delete plans and notes when a closed issue or merged PR / MR confirms the work is complete. Ask before deleting abandoned work with commits missing from every remote, or notes whose completion you cannot confirm.
 - **Honor narrower authorization.** Review-only and draft-text-only requests do not authorize publication. Follow instructions to keep work local, avoid pushing, or omit a PR / MR. Create tags and backup refs only when explicitly requested.
-- **Get explicit approval before merging each PR / MR.** Blanket approval given earlier does not cover requests opened later in the session. Share the URL and wait for `lgtm` or `merge` referring to that specific PR / MR. A request to review and merge authorizes merging each PR / MR covered by the review, including requests opened for its fixes, once every finding is fixed and the fixes are verified.
+- **Get explicit approval before merging each PR / MR.** Blanket approval given earlier does not cover requests opened later in the session. Share the URL and wait for `lgtm` or `merge` referring to that specific PR / MR. The approval covers the request's final head once its in-flight work, review fixes, rebases, and CI finish, so a head that moves within the request's scope needs no new approval. A request to review and merge authorizes merging each PR / MR covered by the review, including requests opened for its fixes, once every finding is fixed and the fixes are verified.
 - **Approve a PR / MR on the user's behalf only when the user explicitly allows it.** Authorization to review or merge a request does not extend to approving it.
 
 ## Worktrees
@@ -91,7 +91,7 @@ Write within the recorded structure for reviewers who have not seen the conversa
 
 ### Merging
 
-1. Confirm that the forge reports the branch as mergeable at the head commit the approval names.
+1. Wait for the owner's pending work on the request to land, then confirm that the forge reports the branch as mergeable at its current head. Stop and report instead if the new commits reach beyond the request's scope.
 2. Wait for CI to pass on that head. On GitHub, first wait (bounded) until `gh pr view <n> --json headRefOid,statusCheckRollup` shows that head with at least one check, because right after a push or branch update `gh pr checks` fails with `no checks reported` until GitHub registers the new head's checks.
 3. On GitHub, next wait for `gh pr checks <n> --watch --fail-fast`, then (bounded) for `gh pr view <n> --json mergeStateStatus` to read `CLEAN`, because some required checks, such as Codecov, are created only after the others finish.
 4. If `mergeStateStatus` reads `BEHIND`, refresh the target branch and rebase the request branch onto it, following the ownership and push safeguards in [Publication](#publication). Repeat steps 2 and 3 on the new head.
