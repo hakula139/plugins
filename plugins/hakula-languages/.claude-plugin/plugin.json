@@ -1,6 +1,6 @@
 {
   "name": "hakula-languages",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Nix and Nushell conventions for coding agents",
   "author": { "name": "Hakula", "url": "https://hakula.xyz" },
   "repository": "https://github.com/hakula139/plugins",
