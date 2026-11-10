@@ -29,6 +29,7 @@ plugins holds Hakula's agent skills, grouped into plugins that coding agents ins
 
 ```bash
 nix flake check --all-systems
+nix develop -c run-hooks
 claude plugin validate .
 ```
 

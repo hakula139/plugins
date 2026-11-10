@@ -9,7 +9,7 @@ description: >-
 
 Read the repository's release contract, such as `RELEASING.md` or `docs/releasing.md`, for its version policy and files, notes source, checks, publishing targets, and recovery restrictions. Follow `git-workflow` for branches, PRs, and approved merges. Use existing GitHub authentication through `gh`. Changelog drafting also requires Nix.
 
-For shared release tooling, read devkit's [release guide](https://github.com/hakula139/devkit/blob/v2/docs/releasing.md) for the script and publishing interfaces you use.
+For shared release tooling, read devkit's [release guide](https://github.com/hakula139/devkit/blob/v3/docs/releasing.md) for the script and publishing interfaces you use.
 
 ## Prepare the release PR
 
@@ -18,13 +18,13 @@ For shared release tooling, read devkit's [release guide](https://github.com/hak
 2. Prepare the declared notes source. For a maintained `CHANGELOG.md`, run devkit's released draft script from the target repository's root:
 
    ```bash
-   nix run github:hakula139/devkit/v2#changelog -- vX.Y.Z
+   nix run github:hakula139/devkit/v3#changelog -- vX.Y.Z
    ```
 
    When the repository's template supports highlights, pass a Markdown file:
 
    ```bash
-   nix run github:hakula139/devkit/v2#changelog -- vX.Y.Z --highlights highlights.md
+   nix run github:hakula139/devkit/v3#changelog -- vX.Y.Z --highlights highlights.md
    ```
 
    For generated GitHub notes or annotated-tag notes, prepare that source as the repository specifies.
