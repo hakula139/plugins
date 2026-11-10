@@ -63,7 +63,7 @@ def skill-errors [skill: path]: nothing -> list<string> {
 
 def plugin-errors [root: path, entry: record]: nothing -> list<string> {
   let source = $"./plugins/($entry.name)"
-  let manifest = ($root | path join "plugins" $entry.name ".claude-plugin" "plugin.json")
+  let manifest = ($root | path join "plugins" $entry.name ".claude-plugin/plugin.json")
   [
     (if $entry.source != $source {
       $"marketplace.json: ($entry.name) has source ($entry.source | to nuon), expected ($source)"
@@ -81,7 +81,7 @@ def plugin-errors [root: path, entry: record]: nothing -> list<string> {
 def main [
   root: path # Repository root holding `.claude-plugin/` and `plugins/`
 ] {
-  let entries = (open ($root | path join ".claude-plugin" "marketplace.json")).plugins
+  let entries = (open ($root | path join ".claude-plugin/marketplace.json")).plugins
   let plugins = (directories ($root | path join "plugins"))
   let named = ($entries | get name | sort)
   let skill_dirs = ($plugins | each {|plugin| $root | path join "plugins" $plugin "skills" })
