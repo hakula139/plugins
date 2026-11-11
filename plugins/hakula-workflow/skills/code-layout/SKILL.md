@@ -14,7 +14,7 @@ The rules below serve that goal, so apply each by reading the construct, and kee
 
 ## Line breaks
 
-- Wrap code and comments at the project's line limit for the language, counting the indent. Hand-wrap comments because formatters rarely reflow them, and keep a one-line string literal and any table row holding one unbroken at any length.
+- Wrap code and comments at the project's line limit for the language, counting the indent. Hand-wrap comments because formatters rarely reflow them, and rewrap moved comments toward that limit at their new indent depth. Keep a one-line string literal and any table row holding one unbroken at any length.
 - Keep each table row, and each record in a list of like records, on one line.
 - When an external call or argument list has two or more options (bare flags included), keep the command, subcommands, and positionals on the first line, and put each option with its value on its own line one level deeper in the order its parser requires. A mode-selecting flag like `install -d` stays with the command like a subcommand, and a clustered bundle such as `tar -czf` stays whole. Options that the parser requires before a subcommand nest under the command, followed by the subcommand line. Keep a call with at most one option, and a builtin's switches, on one line.
 - A wrapped command starts a deeper line, with its own options nested under it.
