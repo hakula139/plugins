@@ -7,6 +7,7 @@ BEMANI
 Butterick
 cachix
 callees
+Clippy
 Datawrapper
 deletelocalsnapshots
 devkit
@@ -24,6 +25,7 @@ glanceable
 gnubin
 gridlines
 hakula
+indoc
 libexec
 lifecycles
 ListenBrainz
@@ -52,7 +54,9 @@ redirections
 regenerable
 reindents
 retarget
+rustc
 résumés
+serde
 sgconfig
 shellcheck
 shfmt
@@ -61,6 +65,7 @@ substituters
 testlib
 tmutil
 Tufte
+uninlined
 unreviewed
 viewports
 wakatime

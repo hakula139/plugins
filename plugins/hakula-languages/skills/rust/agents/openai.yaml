@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Rust'
+  short_description: 'Write and review Rust modules and Cargo manifests'
+  default_prompt: 'Use $rust to write or review these Rust modules or Cargo manifests.'
