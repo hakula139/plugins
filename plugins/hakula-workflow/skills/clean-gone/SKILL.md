@@ -16,7 +16,7 @@ Inspect the relevant Git refs, worktree contents, forge state, and owner or sess
 
 ## Preserve and remove
 
-Before removing a worktree, inspect tracked, untracked, and ignored contents for work worth keeping, including agent memory and plans. Move useful contents to a retained checkout or another durable location. Preserve same-name conflicts as complete separate files and report their destinations. Keep unpublished commits reachable. Ask when removing contents or commits would exceed the task's authorization.
+Retain worktrees with ongoing work, such as an open PR / MR. Remove a clean stale worktree in place without relocating it as an archive. Before removal, inspect tracked, untracked, and ignored contents for work worth keeping, including agent memory and plans. Move useful contents to a retained checkout or another durable location. Preserve same-name conflicts as complete separate files and report their destinations. Keep unpublished commits reachable. Ask when removing contents or commits would exceed the task's authorization.
 
 Choose suitable Git or Workmux commands for the targets, using Workmux for worktrees it manages so its bookkeeping remains consistent. Keep the main checkout and leave the current worktree before removing it. Do not delete remote branches without explicit authorization.
 
