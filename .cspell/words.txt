@@ -1,6 +1,7 @@
 acpx
 apfs
 attrsets
+BEMANI
 cachix
 devkit
 direnv
@@ -11,6 +12,7 @@ enxio
 foldl
 glab
 hakula
+ListenBrainz
 nixfmt
 nixos
 nixpkgs

@@ -54,7 +54,7 @@ If the classification stays uncertain and affects the result, keep the token's b
 
 ### Accepted words
 
-Put verified vocabulary, such as standard command names, library names, and technical terms, in the existing accepted-word dictionary, usually `.cspell/words.txt`. Keep one entry per line, sorted alphabetically without regard to case, and remove case-equivalent duplicates within the edited group. Use lowercase entries under the normal case-insensitive configuration, since `hakula` already covers `Hakula` and `HAKULA`, but preserve a project's explicit case-sensitive requirements and never rewrite source names to match dictionary casing.
+Put verified vocabulary, such as standard command names, library names, and technical terms, in the existing accepted-word dictionary, usually `.cspell/words.txt`. Keep each entry in its canonical capitalization, so proper nouns, acronyms, and project names retain the form their owners use, such as `ListenBrainz` and `BEMANI`, while common terms and command or library names stay lowercase. Keep one entry per line, sorted alphabetically without regard to case, and retain the canonically capitalized entry for case-equivalent duplicates within the edited group, since the normal case-insensitive configuration matches that entry in any casing. Preserve a project's explicit case-sensitive requirements, and never rewrite source names to match dictionary casing.
 
 For a verified underscore-joined identifier, add its accepted component words, never the joined identifier. Keep the **Known typos** rule as the exception for a preserved misspelling.
 
