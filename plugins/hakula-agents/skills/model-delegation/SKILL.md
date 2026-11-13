@@ -6,6 +6,8 @@ description: >-
   another assistant such as Codex, and again after a review or the user corrects a delegate's work.
 ---
 
+<!-- cspell:ignore Kimi -->
+
 # Model Delegation
 
 Delegate according to configured tiers, using the track record below to narrow model assignments. A model lacking a record for a given task type receives work like any other delegate, with the standard review workflow judging the result.
@@ -43,3 +45,7 @@ One clear failure of the model's ability is enough to stop giving it that kind o
 ### Gemini 4 Argon (`gemini-4-argon`)
 
 - **Prose polish**: With full-document context, polishing dense rule and reference prose repeatedly changed meaning through merged prohibitions, altered attribution, merged claims, added qualifiers, and swapped vocabulary. Treat its output as a draft and require hunk-by-hunk fidelity review against the original by a flagship reviewer before publishing. For dense reference text, consider polishing only the narrative paragraphs. It remains suitable for plain explanatory prose.
+
+### Kimi K3.1 Pro (`Kimi-K3.1-Pro`)
+
+- **Verification**: During a moving-branch final-state review, it selected an older commit and called it the current remote head although the brief named the expected live GitHub head, generating stale findings. These comparisons require an independently checked live PR head. Keep that verification with the coordinator or a flagship reviewer, or provide an immutable SHA and exact worktree path. The brief omitted the implementer's exact rebased local worktree, which was a brief gap, but that omission does not excuse the stale-current claim.
