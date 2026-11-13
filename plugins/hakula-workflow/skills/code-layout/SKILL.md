@@ -12,6 +12,8 @@ Lay code out for the reader and for one-line diffs. Where a formatter decides, i
 
 The rules below serve that goal, so apply each by reading the construct, and keep the existing layout where a change would not clearly read better. A layout sweep judges each site the same way, and a brief for one states the goal with the current layout as the default and asks for a before / after list. Settle an ambiguous case by judgment, since tightening a rule to cover it is the user's choice.
 
+A code move preserves behavior while making any needed layout and ordering fixes in the same change. State that scope in the brief, and have review check the moved constructs and their tests against every rule in this guide, as well as the change's behavioral fidelity.
+
 ## Line breaks
 
 - Wrap code and comments at the project's line limit for the language, counting the indent. Hand-wrap comments because formatters rarely reflow them, and rewrap moved comments toward that limit at their new indent depth. Keep a one-line string literal and any table row holding one unbroken at any length.

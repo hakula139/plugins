@@ -83,7 +83,8 @@ Every future session loads an instruction file, so promote only memories that ha
 
 A memory whose frontmatter includes `promotion: <URL>` has already been proposed. Check the request's state using the hosting service's CLI, such as `gh pr view <URL> --json state` or `glab mr view <URL>`:
 
-- **Merged**: Delete the memory and its index line, then remove or reword every `[[name]]` link to it.
+- **Merged, general memories**: Delete the memory and its index line, then remove or reword every `[[name]]` link to it.
+- **Merged, model- or snapshot-specific delegation evidence**: Keep the memory file, its index line, and valid links. Remove only its stale `promotion` metadata.
 - **Closed without merging**: Keep the memory and its `promotion` URL. Never propose it again.
 - **Open**: Leave the memory unchanged.
 
@@ -94,6 +95,7 @@ A memory is a candidate only when all of these hold:
 - Its type is `feedback` or `user`, the types used for durable rules and preferences.
 - It survived an earlier dream, as shown by a Phase 1 modification time older than the previous `.consolidate-lock` timestamp, or was corroborated by two or more sessions.
 - It has no `promotion` URL.
+- It contains no task evidence tied to one model or snapshot. Those observations remain in project memory for `model-delegation`, and only separately generalized delegation lessons are candidates.
 
 ### Choose the target
 
@@ -102,7 +104,7 @@ Choose the most specific file that owns the rule:
 - **One repository**: The convention doc for the affected area, or `AGENTS.md` if no convention doc applies.
 - **Every project**: The instruction sources in the configuration repository the global instructions name, located through that repository's `AGENTS.md`. Without one, the client's own global instruction file, such as `~/.claude/CLAUDE.md` or `~/.codex/AGENTS.md`, unless a tool generates it. Never edit a generated file.
 - **One skill's procedure**: The skill's source `SKILL.md`, in the repository that ships it: the `repository` of the plugin that installs it, or the place the configuration repository's `AGENTS.md` names. Skip any skill whose source cannot be traced to a repository.
-- **One model's track record**: The `model-delegation` skill, or the private track record when the observation names an internal snapshot or route, as that skill describes.
+- **General delegation guidance**: The `model-delegation` skill. Model- and snapshot-specific task observations have no promotion target and remain in project memory.
 
 Read the target before promoting a rule. If it already states the rule, delete the memory and its index line. If its admission rules reject the rule, such as when a repository admits only constraints a reader cannot infer from its code, keep the memory.
 
