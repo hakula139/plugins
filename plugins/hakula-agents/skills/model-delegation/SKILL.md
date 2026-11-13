@@ -38,7 +38,6 @@ One clear failure of the model's ability is enough to stop giving it that kind o
 - **Documentation**: During a restructuring, it added a nonexistent module dependency and narrowed a relative attribution statement into an absolute one that excluded valid behavior. Check moved dependency and behavior claims against source, with flagship review of absolute claims.
 - **Minified control flow**: It inverted a negated classifier denylist in an installed binary and produced an invalid routing recommendation from it. Keep this analysis and validator semantics on flagship models, and evaluate both branches of a negated condition independently.
 - **Boundaries**: It overrode an explicit instruction over a concern that was already moot, and spent hours on probes outside the brief while others waited for its unpublished change.
-- **Gateway images**: Its observed gateway route rejects screenshots returned inside tool results with HTTP 400 and ends the agent mid-task. Use a route that accepts tool-result images for image-reading work.
 
 ### Gemini 4 Argon (`gemini-4-argon`)
 
@@ -47,3 +46,4 @@ One clear failure of the model's ability is enough to stop giving it that kind o
 ### Kimi K3.1 Pro (`Kimi-K3.1-Pro`)
 
 - **Verification**: During a moving-branch final-state review, it selected an older commit and called it the current remote head although the brief named the expected live GitHub head, generating stale findings. These comparisons require an independently checked live PR head. Keep that verification with the coordinator or a flagship reviewer, or provide an immutable SHA and exact worktree path. The brief omitted the implementer's exact rebased local worktree, which was a brief gap, but that omission does not excuse the stale-current claim.
+- **Publication and verification**: It proceeded after recognizing shared-branch ownership and public work-email exposure. Keep unattended promotion local through independent review of content, target, ownership, and both commit identities, plus explicit human creation approval. It also mistook single-CPU affinity for serial execution, an imprecision in the shared brief. Report measured test conditions precisely.
