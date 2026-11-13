@@ -10,7 +10,9 @@ description: >-
 
 Lay code out for the reader and for one-line diffs. Where a formatter decides, its decision wins.
 
-The rules below serve that goal, so apply each by reading the construct, and keep the existing layout where a change would not clearly read better. When a change moves code, include a layout and order review of the moved constructs and their tests, with the behavior-preservation checks the refactor requires. A layout sweep judges each site the same way, and a brief for one states the goal with the current layout as the default and asks for a before / after list. Settle an ambiguous case by judgment, since tightening a rule to cover it is the user's choice.
+The rules below serve that goal, so apply each by reading the construct, and keep the existing layout where a change would not clearly read better. A layout sweep judges each site the same way, and a brief for one states the goal with the current layout as the default and asks for a before / after list. Settle an ambiguous case by judgment, since tightening a rule to cover it is the user's choice.
+
+A code move preserves behavior while bringing layout and ordering under these rules in the same change. State that scope in the brief, and have review check blank lines and function and test order alongside behavioral fidelity.
 
 ## Line breaks
 
