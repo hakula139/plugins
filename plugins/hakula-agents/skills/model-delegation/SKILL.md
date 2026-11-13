@@ -42,4 +42,4 @@ One clear failure of the model's ability is enough to stop giving it that kind o
 
 ### Gemini 4 Argon (`gemini-4-argon`)
 
-- **Prose polish**: With full-document context, polishing dense rule and reference prose repeatedly changed meaning through merged prohibitions, altered attribution, merged claims, added qualifiers, and swapped vocabulary. Treat its output as a draft and require hunk-by-hunk fidelity review against the original before publishing. For dense reference text, prefer polishing only narrative paragraphs. It remains suitable for plain explanatory prose.
+- **Prose polish**: With full-document context, polishing dense rule and reference prose repeatedly changed meaning through merged prohibitions, altered attribution, merged claims, added qualifiers, and swapped vocabulary. Treat its output as a draft and require hunk-by-hunk fidelity review against the original by a flagship reviewer before publishing. For dense reference text, consider polishing only the narrative paragraphs. It remains suitable for plain explanatory prose.
