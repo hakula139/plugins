@@ -6,8 +6,6 @@ description: >-
   another assistant such as Codex, and again after a review or the user corrects a delegate's work.
 ---
 
-<!-- cspell:ignore Kimi -->
-
 # Model Delegation
 
 Delegate according to configured tiers, using the track record below to narrow model assignments. A model lacking a record for a given task type receives work like any other delegate, with the standard review workflow judging the result.
