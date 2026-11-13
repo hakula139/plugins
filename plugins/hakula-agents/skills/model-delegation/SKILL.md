@@ -39,3 +39,7 @@ One clear failure of the model's ability is enough to stop giving it that kind o
 - **Minified control flow**: It inverted a negated classifier denylist in an installed binary and produced an invalid routing recommendation from it. Keep this analysis and validator semantics on flagship models, and evaluate both branches of a negated condition independently.
 - **Boundaries**: It overrode an explicit instruction over a concern that was already moot, and spent hours on probes outside the brief while others waited for its unpublished change.
 - **Gateway images**: Its observed gateway route rejects screenshots returned inside tool results with HTTP 400 and ends the agent mid-task. Use a route that accepts tool-result images for image-reading work.
+
+### Gemini 4 Argon (`gemini-4-argon`)
+
+- **Prose polish**: With full-document context, polishing dense rule and reference prose repeatedly changed meaning through merged prohibitions, altered attribution, merged claims, added qualifiers, and swapped vocabulary. Treat its output as a draft and require hunk-by-hunk fidelity review against the original before publishing. For dense reference text, prefer polishing only narrative paragraphs. It remains suitable for plain explanatory prose.
