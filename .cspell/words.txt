@@ -12,7 +12,6 @@ enxio
 foldl
 glab
 hakula
-kimi
 ListenBrainz
 nixfmt
 nixos
