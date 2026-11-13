@@ -32,18 +32,19 @@ One clear failure of the model's ability is enough to stop giving it that kind o
 
 ### DeepSeek V4.1 Flash (`DeepSeek-V4.1-Flash-1017`)
 
-- **Judgment**: It applied a layout goal unevenly across sibling files, applied a reviewer's mistaken suggestion literally, and deleted accepted rationale comments while moving code.
-- **Edge cases**: It follows exact edit lists and detailed review findings well, but it has mishandled edge cases even when the brief named them.
-- **Verification**: A reviewer's mutation testing found plausible bugs its tests missed despite full line coverage. It also claimed a visual fix that failed browser verification and reported a Nushell probe result that a rerun disproved. Rerun any probe it cites to justify deviating from a review finding.
-- **Documentation**: During a restructuring, it added a nonexistent module dependency and narrowed a relative attribution statement into an absolute one that excluded valid behavior. Check moved dependency and behavior claims against source, with flagship review of absolute claims.
-- **Minified control flow**: It inverted a negated classifier denylist in an installed binary and produced an invalid routing recommendation from it. Keep this analysis and validator semantics on flagship models, and evaluate both branches of a negated condition independently.
-- **Boundaries**: It overrode an explicit instruction over a concern that was already moot, and spent hours on probes outside the brief while others waited for its unpublished change.
+- **Suitable tasks**: Exact edit lists and detailed review findings, with explicit edge cases and limits.
+- **Do not delegate unattended**: Design or convention-heavy restructuring, documentation moves involving dependency or behavior claims, negated-condition analysis, minified or validator control flow, goal-based test design, and scope-sensitive cleanup.
+- **Required review/verification**: Use flagship review for sibling consistency, dependency and absolute behavior claims, negated conditions, and validator semantics. Rerun any probe cited to deviate from a review finding. Verify UI changes in a browser, and use mutation testing to challenge behavior-heavy tests even when line coverage is complete.
+- **Routing constraints**: State scope boundaries and stopping points in the brief. The observed gateway route rejects tool-result images with HTTP 400 and can end the agent mid-task. Use a route that accepts tool-result images for image-reading work.
 
 ### Gemini 4 Argon (`gemini-4-argon`)
 
-- **Prose polish**: With full-document context, polishing dense rule and reference prose repeatedly changed meaning through merged prohibitions, altered attribution, merged claims, added qualifiers, and swapped vocabulary. Treat its output as a draft and require hunk-by-hunk fidelity review against the original by a flagship reviewer before publishing. For dense reference text, consider polishing only the narrative paragraphs. It remains suitable for plain explanatory prose.
+- **Suitable tasks**: Plain explanatory prose.
+- **Do not delegate unattended**: Publishing its polish of dense rule or reference prose, even when the full document supplies context.
+- **Required review/verification**: Preserve prohibitions, attribution, claim boundaries, qualifiers, and evaluative vocabulary. Treat its output as a draft and require hunk-by-hunk fidelity review against the original by a flagship reviewer before publishing. For dense reference text, consider polishing only the narrative paragraphs.
 
 ### Kimi K3.1 Pro (`Kimi-K3.1-Pro`)
 
-- **Verification**: During a moving-branch final-state review, it selected an older commit and called it the current remote head although the brief named the expected live GitHub head, generating stale findings. These comparisons require an independently checked live PR head. Keep that verification with the coordinator or a flagship reviewer, or provide an immutable SHA and exact worktree path. The brief omitted the implementer's exact rebased local worktree, which was a brief gap, but that omission does not excuse the stale-current claim.
-- **Publication and verification**: It proceeded after recognizing shared-branch ownership and public work-email exposure. Keep unattended promotion local through independent review of content, target, ownership, and both commit identities, plus explicit human creation approval. It also mistook single-CPU affinity for serial execution, an imprecision in the shared brief. Report measured test conditions precisely.
+- **Suitable tasks**: Mechanically checked local work, including unattended memory consolidation.
+- **Do not delegate unattended**: Promotion or publication with unresolved content, target, shared-branch ownership, public-facing identities, or human creation approval; and final-state verification on moving branches.
+- **Required review/verification**: Independently check the live PR head before accepting current-state claims. Keep this verification with the coordinator or a flagship reviewer, or provide an immutable SHA and exact worktree path. Keep promotion local until an independent reviewer checks content, target, ownership, and author and committer identities, and a human explicitly approves public creation. Distinguish configured resource limits from observed concurrency, and report measured test conditions precisely.
