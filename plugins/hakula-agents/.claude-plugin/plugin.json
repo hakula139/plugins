@@ -1,6 +1,6 @@
 {
   "name": "hakula-agents",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Shared delegation guidance, memory consolidation, and harness repair for coding agents",
   "author": { "name": "Hakula", "url": "https://hakula.xyz" },
   "repository": "https://github.com/hakula139/plugins",

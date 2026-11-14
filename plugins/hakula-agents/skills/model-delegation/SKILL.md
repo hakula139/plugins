@@ -38,8 +38,6 @@ Rerun any probe cited to support a deviation from the brief or a review finding 
 
 Check sibling consistency when structural edits follow established patterns. For documentation moves or edits involving dependencies or behavior, reconcile cross-references, dependency claims, and behavior descriptions with current code and affected documents before accepting absolute claims.
 
-For tasks touching negated conditions, validator semantics, or minified or generated control flow, have the flagship reviewer trace the actual execution paths and relevant edge cases.
-
 ## Task-specific verification
 
 Apply these checks when the task creates the corresponding risk:
