@@ -15,7 +15,7 @@ description: >-
 ## Errors
 
 - **Contracts**: keep errors structured when callers rely on their variants, methods, or stable public type. `thiserror::Error` supports structs as well as enums.
-- **Context**: in application code already using `anyhow`, add `.context()` where an operation gives a failure meaning. Preserve the error boundaries callers already consume.
+- **Context**: in application code already using `anyhow`, use `.context()` to identify the failed operation. Preserve the error boundaries callers already consume.
 - **Panics**: reserve `expect()` for invariant failures, and state the invariant in its message.
 - **Log events**: keep each `tracing` message constant and pass variable data as fields. Record an `anyhow` chain as `error = %format_args!("{e:#}")` and another `Display` value as `name = %value`.
 
