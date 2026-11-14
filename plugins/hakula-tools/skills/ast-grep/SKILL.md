@@ -11,7 +11,7 @@ compatibility: Requires the ast-grep CLI
 
 ast-grep matches tree-sitter patterns against the syntax tree, so whitespace and line breaks do not affect a match, and code inside comments or strings never matches. Use the client's native structural search or edit tool instead when one exists.
 
-Run `ast-grep`, never `sg`, which is shadow's group command on these hosts.
+Run `ast-grep`, since `sg` can name another program.
 
 If `ast-grep` or `jq` is missing, enter a Nix shell:
 

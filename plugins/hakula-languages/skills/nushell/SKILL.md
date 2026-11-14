@@ -113,17 +113,9 @@ Test a script with `std/assert` when its output is easy to get subtly wrong. Dri
 
 - **Timestamps**: fixtures use a fixed day in UTC, and a test that runs the script sets `TZ` for the child process, as in `with-env {TZ: "UTC"} { ^$nu.current-exe $script }`, so a local-time computation does not depend on the runner's zone, since the running Nushell reads its zone only at startup.
 
-### The nu-test runner
+### Test runners
 
-devkit's [`nu-test`](https://github.com/hakula139/devkit/blob/v3/docs/nu-test.md) runs each command named `test <behavior>` in a `.test.nu` file as one test:
-
-- **Names**: a test name may hold only letters, digits, spaces, and `,.:-`, since the runner passes it to `nu --commands` as source text, where a quote, `;`, or `#` ends or breaks the command.
-- **One process per test**: the tests run in parallel, each in its own `nu` process, so a test that changes its environment or exits cannot affect the others.
-- **Load failures**: a file that fails to parse, or whose test names cannot be read, reports a `(load)` entry with its output and counts as a failure. A file that prints to stdout or exits while loading cannot report its test names, so it fails too.
-- **Stubs**: a `<name>.stub.nu` file beside a test file is installed as an executable `<name>` in the directory `NU_TEST_STUBS` names, with a shebang line the runner writes in place of any the stub has. Call a stub by `$env.NU_TEST_STUBS | path join <name>` or by prepending that directory to `PATH`.
-- **Shared helpers**: a `<name>.testlib.nu` file beside the test files holds builders that several of them `use`. devkit's `nuTests` copies it with the tests, while its packaging leaves `.test.nu`, `.stub.nu`, and `.testlib.nu` files out.
-- **Scratch space**: `TMPDIR` points to a fresh empty directory for each test, which the runner removes after the run, even if the file fails to load.
-- **Exit codes**: the runner prints one `PASS` or `FAIL` line per test and a `passed, failed` summary, then exits nonzero if any test fails or no tests run.
+Use the repository's declared test runner and read its maintained guide for test discovery, process isolation, stubs and shared helpers, scratch space, and failure reporting. Repositories using devkit's `nu-test` follow its [runner guide](https://github.com/hakula139/devkit/blob/v3/docs/nu-test.md).
 
 ## Linting
 
