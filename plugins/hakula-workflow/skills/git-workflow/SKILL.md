@@ -56,7 +56,7 @@ tmux supplies Workmux's terminal backend.
 
 ### Repository conventions
 
-- Before drafting, learn the conventions for titles, body structure, assignees, and labels from the PR / MR template and recent comparable, human-authored requests. Prefer those closest in scope and size, broaden the sample when they do not cover the change, and follow explicit repository rules where examples differ.
+- Before drafting, learn the conventions for titles, body structure, assignees, and labels from the effective PR / MR template, including inherited forge defaults, and recent comparable, human-authored requests. For GitHub, when the target has no local template, check the owner's public `.github` repository. Prefer examples closest in scope and size, broaden the sample when they do not cover the change, and follow explicit repository rules where examples differ.
 - Record the chosen examples and the conventions they show, including heading names, hierarchy and order, prose or list structure, and validation format, and include these notes in any brief.
 - Infer assignees from comparable requests, checking the authenticated identity when the convention is self-assignment.
 - Match labels to established usage and the available labels' descriptions. Commit types can inform the choice but do not imply a fixed label mapping.

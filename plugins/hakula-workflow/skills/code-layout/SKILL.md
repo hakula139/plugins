@@ -17,13 +17,13 @@ A code move preserves behavior while making any needed layout and ordering fixes
 ## Line breaks
 
 - Wrap code and comments at the project's line limit for the language, counting the indent. Hand-wrap comments because formatters rarely reflow them, and rewrap moved comments toward that limit at their new indent depth. Keep a one-line string literal and any table row holding one unbroken at any length.
-- Keep each table row, and each record in a list of like records, on one line.
+- Keep each table row on one line.
 - When an external call or argument list has two or more options (bare flags included), keep the command, subcommands, and positionals on the first line, and put each option with its value on its own line one level deeper in the order its parser requires. A mode-selecting flag like `install -d` stays with the command like a subcommand, and a clustered bundle such as `tar -czf` stays whole. Options that the parser requires before a subcommand nest under the command, followed by the subcommand line. Keep a call with at most one option, and a builtin's switches, on one line.
 - A wrapped command starts a deeper line, with its own options nested under it.
 - Split an argument expression joined by operators the way you split options, keeping each parenthesized group, and each negation with its test, together.
 - In a split call, put each redirection on its own line after the last option, and put a trailing `|| ...` or `&& ...` on its own line starting with the operator, like the next stage of a pipeline. Keep both inline in a one-line call, and keep order-dependent redirections together.
 - Give a data pipeline one stage per line, keeping a short accessor chain whole.
-- Put each branch of a multi-branch construct on its own lines, except a short two-way choice between plain values, which reads as a ternary.
+- Put each branch of a multi-branch construct on its own lines, except a short two-way choice between plain values that reads as a ternary and fits entirely inline.
 
 ## Blank lines and order
 

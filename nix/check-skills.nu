@@ -88,7 +88,15 @@ def main [
   let skills = (
     $skill_dirs
     | where {|dir| $dir | path exists }
-    | each {|dir| directories $dir | each {|name| {name: $name, path: ($dir | path join $name)} } }
+    | each {|dir|
+      directories $dir
+      | each {|name|
+        {
+          name: $name
+          path: ($dir | path join $name)
+        }
+      }
+    }
     | flatten
   )
 

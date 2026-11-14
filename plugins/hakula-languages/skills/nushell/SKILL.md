@@ -22,6 +22,7 @@ description: >-
 ### Layout and order
 
 - **Order**: order a module's sections in the order the entry first calls them, and within a section put callees before callers.
+- **Records**: write record literals with multiple fields one field per line, including records inside lists.
 - **Custom commands**: their switches stay on one line, as a builtin's do, since Nushell parses them itself.
 
 ### Quoting and strings
