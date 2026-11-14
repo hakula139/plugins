@@ -93,9 +93,14 @@ A memory whose frontmatter includes `promotion: <URL>` has already been proposed
 A memory is a candidate only when all of these hold:
 
 - Its type is `feedback` or `user`, the types used for durable rules and preferences.
-- It survived an earlier dream, as shown by a Phase 1 modification time older than the previous `.consolidate-lock` timestamp, or was corroborated by two or more sessions.
 - It has no `promotion` URL.
 - It contains no task evidence tied to one model or snapshot. Those observations remain in project memory for `model-delegation`, and only separately generalized delegation lessons are candidates.
+- It traces to the user's original intent or a reproducible, non-obvious constraint.
+- It changes a future decision within the proposed target's supported scope.
+
+Age and repetition are signals to investigate durability. Sessions from the same task do not establish independent contexts or broader applicability. An explicit preference applies within the scope the user gave it and can qualify on its first occurrence, without evidence from unrelated projects.
+
+Exclude temporary task parameters, facts readers can derive from code or tools, requirements those tools enforce, and duplicate or generic process advice. Keep a still-useful local fact in memory when the client's rules permit it. If another durable source already owns the rule, use that source without adding another instruction.
 
 ### Choose the target
 
@@ -106,25 +111,27 @@ Choose the most specific file that owns the rule:
 - **One skill's procedure**: The skill's source `SKILL.md`, in the repository that ships it: the `repository` of the plugin that installs it, or the place the configuration repository's `AGENTS.md` names. Skip any skill whose source cannot be traced to a repository.
 - **General delegation guidance**: The `model-delegation` skill. Model- and snapshot-specific task observations have no promotion target and remain in project memory.
 
-Read the target before promoting a rule. If it already states the rule, delete the memory and its index line. If its admission rules reject the rule, such as when a repository admits only constraints a reader cannot infer from its code, keep the memory.
+Read the target before promoting a rule. If it already states the rule, delete the memory and its index line. If its admission rules reject the rule, such as when a repository admits only constraints a reader cannot infer from its code, keep the memory. For a skill target, apply the skill-authoring guidance available from its repository or client.
 
 ### Integrate
 
-Rewrite each rule to fit the target's structure, writing conventions, and documentation rules. Merge it with any neighboring rule it refines or generalizes so the section reads as a coherent set. Never paste memory text verbatim. Remove the **Why** and **How to apply** scaffolding, keeping only the reasoning readers need to apply the rule. Promote only what the memory's evidence supports, adding no cases or rows it lacks. Re-run each tool fact as the target words it, in the setting the target describes, such as the repository's own test runner, on the version now pinned. Drop any that does not reproduce, and correct its memory as Phase 3 describes. State the rule in terms visible from the target, without naming tools its readers cannot find, such as a local-only skill.
+Rewrite each rule to fit the target's structure, writing conventions, and documentation rules. Review the complete affected construct and neighboring rules, merging equivalent guidance so each rule has one home. Never paste memory text verbatim. Remove the **Why** and **How to apply** scaffolding, keeping only the reasoning readers need to apply the rule. Promote only what the evidence supports, without turning an example or incident into a broader requirement. Re-run each tool fact as the target words it, in the setting the target describes, such as the repository's own test runner, on the version now pinned. Drop any that does not reproduce, and correct its memory as Phase 3 describes. State the rule in terms visible from the target, without naming tools its readers cannot find, such as a local-only skill.
 
 ### Publish
 
-The PR / MR is the approval gate. Work unattended under the `git-workflow` skill and the target repository's `AGENTS.md`:
+Prepare the change locally under `git-workflow` and the target repository's instructions:
 
-- Open or update at most one PR / MR per target repository per dream, always from the `docs/promote-memories` branch. Check out its open request's branch if one exists. Otherwise, start the branch from the remote default branch.
-- If a closed request left a stale branch with that name, overwrite it with `git push --force-with-lease`.
+- Check related requests, local branches, worktrees, and reported unpublished proposals. Reconcile ownership before preparing overlapping work, without taking over another proposal or creating a competing promotion.
+- Use an owned, isolated task branch based on the target's default branch. Prepare at most one PR / MR per target repository per dream.
 - Run the repository's verification and pre-commit hooks, and never bypass them.
 - In public repositories, keep a rule in memory if it cannot be stated without private material.
 
-After publishing, add `promotion: <URL>` beside the type in each proposed memory's frontmatter metadata.
+Follow `model-delegation`'s promotion and publication gate for independent review of the content, target, ownership, and identities, followed by explicit human approval. Do not push or write to the forge until that approval covers the proposed creation or update. It grants no merge approval.
+
+After approved publication, read the request back before adding `promotion: <URL>` beside the type in each proposed memory's frontmatter metadata.
 
 ## Finish
 
-Mark a completed pass with `: > <store>/.consolidate-lock`. Skip the stamp if the pass stops early. Claude Code's native auto-dream reads the same file's modification time, so both mechanisms count from the latest pass.
+Mark a completed pass with `: > <store>/.consolidate-lock`. A local pass may complete while a proposal awaits approval. Keep its source memories and local work available for review. Skip the stamp if the pass stops early. Claude Code's native auto-dream reads the same file's modification time, so both mechanisms count from the latest pass.
 
-Report the backup path, briefly summarize what you consolidated, updated, or pruned, and give the URL of each opened or updated PR / MR along with the memories it promotes. Also report memories retired because their promotion merged or their target already covered them. If the memories were already concise and nothing changed, say so.
+Report the backup path, briefly summarize what you consolidated, updated, or pruned, and identify prepared proposals by their local branch, worktree, exact head, and verification. Give the URL of each opened or updated PR / MR along with the memories it promotes. Also report memories retired because their promotion merged or their target already covered them. If the memories were already concise and nothing changed, say so.
