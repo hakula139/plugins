@@ -27,7 +27,8 @@ description: >-
 
 ### Quoting and strings
 
-- **Quoting**: quote string values, including paths and path segments, so they read as data. Use double quotes, switching to single quotes when the text holds a literal backslash or double quote, as a regex does. Leave names, flags, subcommands, and a builtin's own words bare, as in `decode utf-8`. Leave a glob meant to expand bare, and build a home path from `$env.HOME? | default $nu.home-dir` because a quoted `~` stays literal. Keep the quotes any word needs to stay a literal string, as in `"0700"` and `"1min"`.
+- **Quoting**: quote string values, including paths and path segments, so they read as data. Use double quotes, switching to single quotes when the text holds a literal backslash or double quote, as a regex does. Leave names, flags, subcommands, and a builtin's own words bare, as in `decode utf-8`. Leave a glob meant to expand bare, and build a home path from `$env.HOME? | default $nu.home-dir` because a quoted `~` stays literal. Fixed numeric modes passed to external commands may stay bare, as in `chmod 600`, because their argument bytes are preserved. Keep the quotes any word needs to stay a literal string, as in `"0700"` and `"1min"`.
+- **Interpolation**: prefer native `$"...($value)..."` for complex string assembly, keeping simple prefix or suffix concatenation when it reads naturally. Escape literal parentheses as `\(` and `\)` in double-quoted interpolations.
 - **Multiline strings**: align the opening quote, content, and closing quote at the same column, then place `| str dedent` from `std-rfc/str` on the next line and any enclosing parenthesis on its own line.
 
 ### Paths
