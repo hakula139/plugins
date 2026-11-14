@@ -7,7 +7,6 @@ BEMANI
 Butterick
 cachix
 callees
-Clippy
 Datawrapper
 deletelocalsnapshots
 devkit
@@ -19,6 +18,7 @@ Duarte
 ENXIO
 fileset
 foldl
+formatdoc
 frontmatter
 glab
 glanceable
@@ -52,9 +52,9 @@ purgeable
 raine
 redirections
 regenerable
+reindenting
 reindents
 retarget
-rustc
 résumés
 serde
 sgconfig
@@ -63,9 +63,9 @@ shfmt
 slideuments
 substituters
 testlib
+thiserror
 tmutil
 Tufte
-uninlined
 unreviewed
 viewports
 wakatime
@@ -73,3 +73,4 @@ WCAG
 workmux
 worktree
 worktrees
+writedoc
