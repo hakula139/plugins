@@ -57,7 +57,7 @@ These traps assume the Nushell Book's [Thinking in Nu](https://www.nushell.sh/bo
 #### Input formats
 
 - **`from json` accepts some plain text, so `try` cannot validate JSON.** `open` on an empty JSON, YAML, or NUON file returns null, while truncated JSON raises, so check the shape (`$j | describe | str starts-with "record"`) before reading a field.
-- **YAML error messages hide the parser's detail.** Read `$e.rendered` in the catch block, since `$e.msg` says only `Error while parsing as yaml`.
+- **YAML error messages hide the parser's detail.** Read `$e.rendered` in the catch block, since `$e.msg` gives only a generic parsing or scanning message.
 - **`open --raw` yields a byte stream, which collects to `binary` on invalid UTF-8**, so a `: string` parameter or a `string ->` input raises a type error. To require UTF-8, pipe the stream itself into `into string` inside `try`, which raises `Non-UTF8 string` on invalid bytes and on a UTF-16 BOM. `into string` rejects every collected `binary`, valid or not.
 
 #### Types and shapes
@@ -77,7 +77,7 @@ These traps assume the Nushell Book's [Thinking in Nu](https://www.nushell.sh/bo
 
 #### Strings
 
-- **Dynamic regexes need single-quoted pieces.** Parentheses interpolate in both `$"..."` and `$'...'`, and double quotes consume backslashes, so concatenate them: `($label + ' (?<n>\d+)')`.
+- **Dynamic regexes can use single-quoted pieces.** Parentheses interpolate in both `$"..."` and `$'...'`, and double quotes consume backslashes, so single-quoted concatenation avoids those escapes: `($label + ' (?<n>\d+)')`.
 - **`url encode` escapes characters a URI keeps.** The default escapes every ASCII punctuation mark except `.`, `/`, and `:`, including the unreserved `-`, `_`, and `~`, and `--all` escapes those three as well. To match another encoder, pass only the characters it escapes through `url encode --all`.
 - **`str length` counts UTF-8 bytes by default.** `"中文字" | str length` returns 9 on the pinned Nushell. Pass `--chars` or `--grapheme-clusters` when a limit is written in characters.
 
@@ -92,8 +92,8 @@ These traps assume the Nushell Book's [Thinking in Nu](https://www.nushell.sh/bo
 ### External commands
 
 - **`cp` reports a refused read or write as `nu: <error>` and still succeeds.** Use `^cp` when that failure must raise an error.
-- **A nonzero external exit ends the script with that code and prints nothing.** Tolerate it with `try`, or by using `| complete` and checking `.exit_code`. Piping into `ignore` discards the exit status along with the output, so after `^cmd | ignore` the script continues and can exit 0.
-- **Reading stdin requires `^cat`.** `$in` is empty under a shebang that lacks `--stdin`, and reopening `/dev/stdin` fails with ENXIO on a socket. Text capture strips one trailing newline, so use `^cat | into binary` for byte-identical round trips.
+- **A nonzero external exit ends the script with that code without an automatic failure diagnostic.** The command's stdout and stderr can still print. Tolerate it with `try`, or by using `| complete` and checking `.exit_code`. Piping into `ignore` discards the exit status along with the output, so after `^cmd | ignore` the script continues and can exit 0.
+- **`$in` is empty under a shebang without `--stdin`.** Use `^cat` when that flag is absent. On Linux, reopening `/dev/stdin` fails with ENXIO on a socket. Text capture strips one trailing newline, so use `^cat | into binary` for byte-identical round trips.
 
 ### Environment
 
