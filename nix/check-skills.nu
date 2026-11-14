@@ -12,7 +12,7 @@ const MAX_DESCRIPTION = 1024
 
 def directories [dir: path]: nothing -> list<string> {
   ls --full-paths $dir
-  | where type == dir
+  | where type == "dir"
   | get name
   | path basename
   | sort

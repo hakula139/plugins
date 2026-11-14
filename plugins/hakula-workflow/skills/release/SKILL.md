@@ -7,29 +7,15 @@ description: >-
 
 # Release
 
-Read the repository's release contract, such as `RELEASING.md` or `docs/releasing.md`, for its version policy and files, notes source, checks, publishing targets, and recovery restrictions. Follow `git-workflow` for branches, PRs, and approved merges. Use existing GitHub authentication through `gh`. Changelog drafting also requires Nix.
-
-For shared release tooling, read devkit's [release guide](https://github.com/hakula139/devkit/blob/v3/docs/releasing.md) for the script and publishing interfaces you use.
+Read the repository's release contract, such as `RELEASING.md` or `docs/releasing.md`, for its version policy and files, notes source, checks, publishing targets, authentication, tooling, and recovery restrictions. Follow the declared tooling's documentation and use the target's existing authentication. Follow `git-workflow` for branches, PRs, and approved merges.
 
 ## Prepare the release PR
 
 1. Create a release branch from the current default branch and update the version files, lockfiles, fixtures, and installation references required by the repository's contract.
 
-2. Prepare the declared notes source. For a maintained `CHANGELOG.md`, run devkit's released draft script from the target repository's root:
+2. Prepare the declared notes source using the repository's specified draft tooling and inputs, including highlights when supported.
 
-   ```bash
-   nix run github:hakula139/devkit/v3#changelog -- vX.Y.Z
-   ```
-
-   When the repository's template supports highlights, pass a Markdown file:
-
-   ```bash
-   nix run github:hakula139/devkit/v3#changelog -- vX.Y.Z --highlights highlights.md
-   ```
-
-   For generated GitHub notes or annotated-tag notes, prepare that source as the repository specifies.
-
-3. Curate the notes, run the required checks, and open the release PR titled `chore(release): vX.Y.Z`. If another change lands first, update the existing branch and regenerate the draft range while preserving curation.
+3. Curate the notes, run the required checks, and open the release PR using the repository's release contract and the conventions established through `git-workflow`. If another change lands first, update the existing branch and regenerate the draft range while preserving curation.
 
 ## Curate the notes
 
