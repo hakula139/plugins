@@ -23,7 +23,7 @@ A code move preserves behavior while making any needed layout and ordering fixes
 - Split an argument expression joined by operators the way you split options, keeping each parenthesized group, and each negation with its test, together.
 - In a split call, put each redirection on its own line after the last option, and put a trailing `|| ...` or `&& ...` on its own line starting with the operator, like the next stage of a pipeline. Keep both inline in a one-line call, and keep order-dependent redirections together.
 - Give a data pipeline one stage per line, keeping a short accessor chain whole.
-- Put each branch of a multi-branch construct on its own lines, except a short two-way choice between plain values that reads as a ternary and fits entirely inline. If any branch spans multiple lines, put all branches on their own lines.
+- Put each branch of a multi-branch construct on its own lines, except a short two-way choice between plain values that reads as a ternary and fits entirely inline.
 
 ## Blank lines and order
 
