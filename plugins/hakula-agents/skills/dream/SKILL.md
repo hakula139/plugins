@@ -50,13 +50,7 @@ Look for new information worth persisting, in rough priority order:
    - **OMP**: `~/.omp/agent/sessions/*/*.jsonl`, where the `"type":"session"` line records `cwd`.
    - **OpenCode**: Skip it, since it stores sessions in SQLite.
 
-   Transcripts are large, so use `find <dir> -newer <store>/.consolidate-lock` to select files, then grep them for narrow terms:
-
-   ```bash
-   grep -n '<narrow term>' <selected transcripts> | tail -50
-   ```
-
-   Search only for suspected signal, such as user corrections, approaches the user confirmed, and failures that recurred across sessions. Never read transcripts exhaustively.
+   Select transcripts modified since `.consolidate-lock`, then search narrowly for suspected signal, such as user corrections, approaches the user confirmed, and failures that recurred across sessions. Never read transcripts exhaustively.
 
 ## Phase 3: Consolidate
 
