@@ -88,7 +88,7 @@ For a linked URL, check the request's state using the hosting service's CLI, suc
 - **Closed without merging**: Keep the memory and its `promotion` URL. Never propose it again.
 - **Open**: Leave the memory and its proposal pointer unchanged.
 
-Leave pending proposals for the main agent to review. If a proposal pointer no longer resolves, reconcile existing work and its ownership before clearing the pending state and preparing another proposal.
+Leave pending proposals for the main agent to review.
 
 ### Select candidates
 
@@ -123,7 +123,7 @@ Rewrite each rule to fit the target's structure, writing conventions, and docume
 
 ### Prepare and review proposals
 
-Prepare at most one local proposal per target repository per dream under `git-workflow` and the target repository's instructions, using an owned Workmux worktree and unique branch. In public repositories, keep a rule in memory if it cannot be stated without private material.
+Prepare at most one local proposal per target repository per dream under `git-workflow` and the target repository's instructions. In public repositories, keep a rule in memory if it cannot be stated without private material.
 
 Keep a short record under `<store>/proposals/<id>.md` linking the source memories, local branch and worktree, and proposed request content and metadata. Mark each source memory `promotion: pending` with the store-relative `proposal` pointer so another dream can find the unpublished work without proposing it again.
 
