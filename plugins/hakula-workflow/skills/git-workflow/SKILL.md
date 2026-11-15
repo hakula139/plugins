@@ -104,6 +104,7 @@ Read the upstream PR / MR or commit message and the surrounding code to learn ea
 
 ## Issues
 
+- **Title**: Follow explicit user and repository rules, then derive the title from the repository's actual issue conventions and comparable human-authored examples. Use the commit `type(scope):` pattern only when those conventions establish it for issues.
 - **Description**: The current specification, covering the goal, acceptance criteria, decisions and scope, dependencies, and findings that shape the work. Edit it in place, marking criteria as they are met, so it shows the current state on its own.
 - **Comments**: Only events watchers need, such as why an issue closes without a linked PR / MR or reopens, questions or discussion that need a reply, and brief pointers to material scope changes in the description. Skip progress updates and anything a linked PR / MR already shows.
 - **Working notes**: Execution details, such as agent assignments, worktrees, in-flight branches, and private context, stay in the session or a gitignored plans directory.
