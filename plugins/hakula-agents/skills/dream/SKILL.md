@@ -75,19 +75,27 @@ Every future session loads an instruction file, so promote only memories that ha
 
 ### Track earlier proposals
 
-A memory whose frontmatter includes `promotion: <URL>` has already been proposed. Check the request's state using the hosting service's CLI, such as `gh pr view <URL> --json state` or `glab mr view <URL>`:
+A memory's frontmatter can record its promotion state:
+
+- `promotion: <URL>` links a published request.
+- `promotion: pending` and `proposal: proposals/<id>.md` identify a local proposal record, with the path relative to the store.
+- `promotion: declined` records the user's decision. Retain the memory and exclude it from future proposals unless the user explicitly reopens it.
+
+For a linked URL, check the request's state using the hosting service's CLI, such as `gh pr view <URL> --json state` or `glab mr view <URL>`:
 
 - **Merged, general memories**: Delete the memory and its index line, then remove or reword every `[[name]]` link to it.
-- **Merged, model- or snapshot-specific delegation evidence**: Keep the memory file, its index line, and valid links. Remove only its stale `promotion` metadata.
+- **Merged, model- or snapshot-specific delegation evidence**: Keep the memory file, its index line, and valid links. Remove only its stale `promotion` and `proposal` metadata.
 - **Closed without merging**: Keep the memory and its `promotion` URL. Never propose it again.
-- **Open**: Leave the memory unchanged.
+- **Open**: Leave the memory and its proposal pointer unchanged.
+
+Leave pending proposals for the main agent to review.
 
 ### Select candidates
 
 A memory is a candidate only when all of these hold:
 
 - Its type is `feedback` or `user`, the types used for durable rules and preferences.
-- It has no `promotion` URL.
+- It has no `promotion` field.
 - It contains no task evidence tied to one model or snapshot. Those observations remain in project memory for `model-delegation`, and only separately generalized delegation lessons are candidates.
 - It traces to the user's original intent or a reproducible, non-obvious constraint.
 - It changes a future decision within the proposed target's supported scope.
@@ -95,6 +103,8 @@ A memory is a candidate only when all of these hold:
 Age and repetition are signals to investigate durability. Sessions from the same task do not establish independent contexts or broader applicability. An explicit preference applies within the scope the user gave it and can qualify on its first occurrence, without evidence from unrelated projects.
 
 Exclude temporary task parameters, facts readers can derive from code or tools, requirements those tools enforce, and duplicate or generic process advice. Keep a still-useful local fact in memory when the client's rules permit it. If another durable source already owns the rule, use that source without adding another instruction.
+
+When the parent task is read-only or report-only, stop at candidates and draft instruction edits in the report, before any target-repository writes.
 
 ### Choose the target
 
@@ -111,21 +121,18 @@ Read the target before promoting a rule. If it already states the rule, delete t
 
 Rewrite each rule to fit the target's structure, writing conventions, and documentation rules. Review the complete affected construct and neighboring rules, merging equivalent guidance so each rule has one home. Never paste memory text verbatim. Remove the **Why** and **How to apply** scaffolding, keeping only the reasoning readers need to apply the rule. Promote only what the evidence supports, without turning an example or incident into a broader requirement. Re-run each tool fact as the target words it, in the setting the target describes, such as the repository's own test runner, on the version now pinned. Drop any that does not reproduce, and correct its memory as Phase 3 describes. State the rule in terms visible from the target, without naming tools its readers cannot find, such as a local-only skill.
 
-### Publish
+### Prepare and review proposals
 
-Prepare the change locally under `git-workflow` and the target repository's instructions:
+Prepare at most one local proposal per target repository per dream under `git-workflow` and the target repository's instructions. In public repositories, keep a rule in memory if it cannot be stated without private material.
 
-- Check related requests, local branches, worktrees, and reported unpublished proposals. Reconcile ownership before preparing overlapping work, without taking over another proposal or creating a competing promotion.
-- Use an owned, isolated task branch based on the target's default branch. Prepare at most one PR / MR per target repository per dream.
-- Run the repository's verification and pre-commit hooks, and never bypass them.
-- In public repositories, keep a rule in memory if it cannot be stated without private material.
+Keep a short record under `<store>/proposals/<id>.md` linking the source memories, local branch and worktree, and proposed request content and metadata. Mark each source memory `promotion: pending` with the store-relative `proposal` pointer so another dream can find the unpublished work without proposing it again.
 
-Follow `model-delegation`'s promotion and publication gate for independent review of the content, target, ownership, and identities, followed by explicit human approval. Do not push or write to the forge until that approval covers the proposed creation or update. It grants no merge approval.
+Unattended promotion stops before pushing or writing to the forge. The main agent reviews the proposal with an independent read-only reviewer and previews its complete content and metadata to the user. Wait for explicit approval of that proposal's creation, then publish under `git-workflow` and `model-delegation`. Ordinary explicit user-driven implementation and publication retain their existing authorization. During an unrelated task, report a ready proposal at a natural report boundary and leave it pending if the user does not engage.
 
-After approved publication, read the request back before adding `promotion: <URL>` beside the type in each proposed memory's frontmatter metadata.
+After publication and reading the request back, replace `promotion: pending` with its URL. If the user declines, write `promotion: declined` and retain the useful source memories. Keep unpublished commits and worktrees available for review, with cleanup governed by `git-workflow`.
 
 ## Finish
 
 Mark a completed pass with `: > <store>/.consolidate-lock`. A local pass may complete while a proposal awaits approval. Keep its source memories and local work available for review. Skip the stamp if the pass stops early. Claude Code's native auto-dream reads the same file's modification time, so both mechanisms count from the latest pass.
 
-Report the backup path, briefly summarize what you consolidated, updated, or pruned, and identify prepared proposals by their local branch, worktree, exact head, and verification. Give the URL of each opened or updated PR / MR along with the memories it promotes. Also report memories retired because their promotion merged or their target already covered them. If the memories were already concise and nothing changed, say so.
+Report the backup path and briefly summarize what you consolidated, updated, or pruned. For each proposal, report its status and source memories, with its proposal record while pending and its public URL after publication and reading the request back. Report candidates held by a read-only parent task to its owning lead. Also report memories retired because their promotion merged or their target already covered them. If the memories were already concise and nothing changed, say so.
