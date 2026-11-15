@@ -25,7 +25,7 @@ For a branch comparison, refresh the relevant remote refs, then use `git merge-b
 
 ## Load the instructions
 
-Apply the global instructions, the repository's `AGENTS.md` / `CLAUDE.md` files, including nested files for touched paths, and every convention document they reference for the affected areas. Treat project review sections, such as a `## Code Review` checklist, as additional criteria. Repository rules for review format and severity take precedence over this skill's defaults. Before a whole-repository review, also read the open issues and PRs / MRs.
+Apply the global instructions, the repository's `AGENTS.md` / `CLAUDE.md` files, including nested files for touched paths, and every convention document they reference for the affected areas. Treat project review sections as additional criteria. Repository rules for review format and severity take precedence over this skill's defaults. Before a whole-repository review, also read the open issues and PRs / MRs.
 
 ## Review each dimension
 

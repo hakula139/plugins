@@ -8,7 +8,7 @@ Hakula's agent skills, packaged as plugins for Claude Code, Codex, and OMP.
 
 ## Plugins
 
-The `hakula-plugins` marketplace holds four plugins. Each skill is a self-contained [Agent Skills][agent-skills] directory under `plugins/<plugin>/skills/`, and a skill's `compatibility` field names the tools it needs.
+The `hakula-plugins` marketplace holds four plugins. Each skill is a self-contained [Agent Skills](https://agentskills.io/specification) directory under `plugins/<plugin>/skills/`, and a skill's `compatibility` field names the tools it needs.
 
 | Plugin             | Skills                                                                                                 |
 | ------------------ | ------------------------------------------------------------------------------------------------------ |
@@ -17,7 +17,7 @@ The `hakula-plugins` marketplace holds four plugins. Each skill is a self-contai
 | `hakula-tools`     | `ast-grep`, `browser-debugging`, `cspell`, `disk-cleanup`, `find-docs`, `frontend-design`, `read-pdfs` |
 | `hakula-agents`    | `acp-delegate`, `dream`, `harness-repair`, `model-delegation`                                          |
 
-Several skills refer to each other by name, such as `review` to `git-workflow`, so install `hakula-workflow` beside any other plugin.
+Several skills refer to each other by name, so install `hakula-workflow` beside any other plugin.
 
 ## Install
 
@@ -92,5 +92,3 @@ home.file = lib.mapAttrs' (
 ## License
 
 Copyright (c) 2026 [Hakula](https://hakula.xyz). Licensed under the [MIT License](LICENSE).
-
-[agent-skills]: https://agentskills.io/specification
