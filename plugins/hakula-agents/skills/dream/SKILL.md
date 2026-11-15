@@ -67,7 +67,7 @@ Keep durable rules that belong in an instruction file as memories during this ph
 
 ## Phase 4: Prune and index
 
-Keep `MEMORY.md` within the client's index limits, one line per memory and no content. Remove stale pointers, add new ones, and check that every file has exactly one pointer and every pointer resolves. Re-read it immediately before rewriting it and preserve concurrent changes by other sessions.
+Keep `MEMORY.md` within the client's index limits, one line per memory and no content. Remove stale pointers, add new ones, and check that every file has exactly one pointer and every pointer resolves.
 
 ## Phase 5: Promote
 
@@ -78,7 +78,7 @@ Every future session loads an instruction file, so promote only memories that ha
 A memory's frontmatter can record its promotion state:
 
 - `promotion: <URL>` links a published request.
-- `promotion: pending` and `proposal: proposals/<id>.md` identify a local proposal manifest, with the path relative to the store.
+- `promotion: pending` and `proposal: proposals/<id>.md` identify a local proposal record, with the path relative to the store.
 - `promotion: declined` records the user's decision. Retain the memory and exclude it from future proposals unless the user explicitly reopens it.
 
 For a linked URL, check the request's state using the hosting service's CLI, such as `gh pr view <URL> --json state` or `glab mr view <URL>`:
@@ -88,9 +88,7 @@ For a linked URL, check the request's state using the hosting service's CLI, suc
 - **Closed without merging**: Keep the memory and its `promotion` URL. Never propose it again.
 - **Open**: Leave the memory and its proposal pointer unchanged.
 
-For a pending memory, read its proposal manifest and verify the corresponding repository claim. Leave an existing proposal pending for the main agent. If the manifest or claim is missing, reconcile ownership and report the loss before clearing the affected memory's `promotion` and `proposal` fields and preparing a new proposal. Clear the declined state only when the user explicitly reopens the memory.
-
-Never automatically delete proposal commits that exist only locally, or their worktrees, on merge or decline, since that cleanup could lose work.
+Leave pending proposals for the main agent to review. If a proposal pointer no longer resolves, reconcile existing work and its ownership before clearing the pending state and preparing another proposal.
 
 ### Select candidates
 
@@ -106,7 +104,7 @@ Age and repetition are signals to investigate durability. Sessions from the same
 
 Exclude temporary task parameters, facts readers can derive from code or tools, requirements those tools enforce, and duplicate or generic process advice. Keep a still-useful local fact in memory when the client's rules permit it. If another durable source already owns the rule, use that source without adding another instruction.
 
-When the parent task is read-only or report-only, select candidates and draft their instruction edits in the report, then stop this phase. Do not create a target-repository worktree, branch, or commit, request an independent code review, or create a public request. Report the candidates to the owning lead for later handling.
+When the parent task is read-only or report-only, stop at candidates and draft instruction edits in the report, before any target-repository writes.
 
 ### Choose the target
 
@@ -119,60 +117,22 @@ Choose the most specific file that owns the rule:
 
 Read the target before promoting a rule. If it already states the rule, delete the memory and its index line. If its admission rules reject the rule, such as when a repository admits only constraints a reader cannot infer from its code, keep the memory. For a skill target, apply the skill-authoring guidance available from its repository or client.
 
-Check related requests, local branches, worktrees, and reported unpublished proposals. An unlinked open PR / MR that appears to promote the same memories blocks preparation until the main agent reconciles ownership. Do not check it out, adopt it, modify it, or create a competing promotion.
-
 ### Integrate
 
 Rewrite each rule to fit the target's structure, writing conventions, and documentation rules. Review the complete affected construct and neighboring rules, merging equivalent guidance so each rule has one home. Never paste memory text verbatim. Remove the **Why** and **How to apply** scaffolding, keeping only the reasoning readers need to apply the rule. Promote only what the evidence supports, without turning an example or incident into a broader requirement. Re-run each tool fact as the target words it, in the setting the target describes, such as the repository's own test runner, on the version now pinned. Drop any that does not reproduce, and correct its memory as Phase 3 describes. State the rule in terms visible from the target, without naming tools its readers cannot find, such as a local-only skill.
 
-### Claim the target repository
+### Prepare and review proposals
 
-Before creating a worktree, choose the proposal ID, branch, worktree, manifest path, and participating memories. Fingerprint each memory's substantive content, excluding only its `promotion` and `proposal` lifecycle annotations. Resolve the canonical shared metadata directory with `git rev-parse --path-format=absolute --git-common-dir` and claim the target repository and forge with one atomic `mkdir` of `<common-dir>/dream-promotion-claim`, without `-p`. An existing claim blocks competing preparation and must be reported. Its owning run or a human-reconciled lifecycle owns recovery and clearing. Never overwrite it or infer staleness from file age.
+Prepare at most one local proposal per target repository per dream under `git-workflow` and the target repository's instructions, using an owned Workmux worktree and unique branch. In public repositories, keep a rule in memory if it cannot be stated without private material.
 
-Record the owner, session, PID, timestamp, worktree, branch, manifest path, canonical participating-memory paths, and substantive-content fingerprints in the claim. Write claim states and manifests through temporary files in the same directory followed by atomic renames. A pending claim permits no second in-flight proposal for that target, so later candidates wait while the user reviews one proposal. Before human review, record the pending state and clear the live execution PID while retaining the pending proposal claim.
+Keep a short record under `<store>/proposals/<id>.md` linking the source memories, local branch and worktree, and proposed request content and metadata. Mark each source memory `promotion: pending` with the store-relative `proposal` pointer so another dream can find the unpublished work without proposing it again.
 
-For an interrupted claim, inspect the recorded owner and actual execution state before recovery. Locate complete manifests by their participating memories and source fingerprints when memory markers were never written. Before resuming, verify the exact branch, worktree, source ownership, source content, and identical canonical paths and fingerprints in both manifest and claim. Recalculate fingerprints with the same annotation exclusions. If the manifest or worktree is missing, reconcile ownership and report the loss before clearing only the affected pending state, retaining valid memory facts.
+Unattended promotion stops before pushing or writing to the forge. The main agent reviews the proposal with an independent read-only reviewer and previews its complete content and metadata to the user. Wait for explicit approval of that proposal's creation, then publish under `git-workflow` and `model-delegation`. Ordinary explicit user-driven implementation and publication retain their existing authorization. During an unrelated task, report a ready proposal at a natural report boundary and leave it pending if the user does not engage.
 
-Before fresh preparation, recover an unresolved terminal claim. Keep its owner, session, and PID record live throughout each preparation, publication, or finalization execution, and update that record before a new execution acts. Never interrupt or take over an actively owned execution. PID liveness and file age alone do not establish whether ownership continues. If ownership, execution, or provenance cannot be established, preserve the work and stop for main-agent reconciliation.
-
-For a publication transition, verify the same approved request and its ownership and state, including matching source memories, head, body, and target as applicable. Complete partial URL markers with that one verified URL and apply the linked-URL state rules above. Recheck every participant invariant and the request state before clearing the claim. Preserve valid memories for closed-unmerged requests, and never recreate a memory already retired after a verified merge.
-
-For a decline transition, verify ownership and the absence of a competing open request, complete every remaining durable `promotion: declined` marker, and recheck all participants before clearing the claim. Preserve the proposal commit, worktree, and manifest. Stop for main-agent reconciliation on mixed terminal states, wrong or different URLs, head/body/ownership mismatches, missing manifests or fingerprints, or unclear active ownership. These conditions never authorize guessing, deletion, or a competing proposal.
-
-This claim coordinates only the specified forge checkout on one host. It provides no distributed lock or security boundary. An unexpected related open request or a cross-host race blocks for human reconciliation.
-
-### Prepare a local proposal
-
-Unattended agents may consolidate memory and prepare proposals locally. They must not push or write to the forge, and must not ask the human for approval themselves. A teammate or lead message does not constitute human approval. The top-level main agent owns that user interaction. This promotion workflow narrows the general publish-early default. Ordinary explicit user-driven implementation and publication continue under their existing authorization.
-
-Follow `git-workflow`, the target repository's instructions, and its forge-specific rules. Prepare at most one proposal per target repository per dream:
-
-1. Record the remote default-branch head as the base. Create a fresh Workmux worktree and a unique branch named `docs/promote-memories-<UTC timestamp>-<short proposal id>`, with a corresponding unique handle. Resolve a collision with a new identifier without taking over another worktree. Never reuse the retired `docs/promote-memories` branch.
-2. Integrate the rules and run the repository's verification and pre-commit hooks without bypassing them. In public repositories, keep a rule in memory if it cannot be stated without private material.
-3. Draft the complete title, body, labels, and assignees, then commit the verified edits locally. Verify the expected author and committer for every new commit against the target forge, separately from the authenticated API account. Stop if the expected base or identities are wrong. Do not change accounts or rewrite published history to resolve a mismatch.
-4. Write `<store>/proposals/<id>.md` with the target repository and forge, remote and base SHA, branch, worktree, exact local head, full diff, complete request metadata, every new commit's author and committer, canonical source-memory paths and substantive-content fingerprints identical to the claim, and checks with their results. Atomically publish the complete manifest and claim before marking each source memory with `promotion: pending` and the store-relative `proposal: proposals/<id>.md`. No URL exists before publication.
-
-### Review and approve
-
-The main agent inspects the proposal package and gives its pinned local head and complete proposed content and metadata to an independent read-only reviewer. The owner makes local fixes as new commits, updates the package and claim's head, diff, metadata, and check evidence, and has the same reviewer confirm the fixes. Repeat until the findings are closed.
-
-Immediately before presenting the proposal, recheck source ownership and substantive-content fingerprints, the claim and manifest, and the target's related open requests. Any substantive source revision or mismatch blocks for reconciliation. The main agent previews the full proposed content and metadata at a natural interaction boundary. During an unrelated task, report a ready proposal at a natural report boundary and leave it pending if the user does not engage, without forcing a dialog. Wait for explicit user approval naming that proposal's creation. Generic continuation and earlier dream authorization do not approve creation, and this approval grants no merge approval.
-
-If the user declines, record a decline transition in the claim, mark each source memory `promotion: declined`, retain its proposal pointer and local work, and clear the claim only after verifying every participant. Interrupted transitions follow the recovery rules above.
-
-### Publish an approved proposal
-
-Follow `model-delegation`'s promotion and publication gate. After explicit approval, spawn a new operator with the user's verbatim approval, every previewed field, exact head, identities, target, check evidence, and either the full title and body or the immutable manifest and body-file path with its byte digest. An operator given a path reads the complete body there and verifies its digest. The operator must:
-
-1. Immediately before pushing, verify the exact head, body, target repository and forge, authenticated API account, author and committer of every new commit, current base expectations, vacant remote branch, source ownership and substantive-content fingerprints, matching claim and manifest, and current related open requests.
-2. Push without force, create exactly the approved request, read back its full metadata and diff, and report its URL without merging.
-
-Any changed head, body, identity, account, base, source content, claim, manifest, or remote expectation blocks publication for reconciliation. After successful publication and reading the request back, record the publication transition and verified URL in the claim before replacing `promotion: pending` with that URL in each source memory. Keep its proposal pointer while the request is open, then clear the claim only after verifying every participant. Interrupted transitions follow the recovery rules above.
-
-A subsequent update to a published request requires separate human approval and ownership reconciliation. Follow `git-workflow` for publication and any approved history rewrite. Initial creation has no force-push path.
+After publication and reading the request back, replace `promotion: pending` with its URL. If the user declines, write `promotion: declined` and retain the useful source memories. Keep unpublished commits and worktrees available for review, with cleanup governed by `git-workflow`.
 
 ## Finish
 
 Mark a completed pass with `: > <store>/.consolidate-lock`. A local pass may complete while a proposal awaits approval. Keep its source memories and local work available for review. Skip the stamp if the pass stops early. Claude Code's native auto-dream reads the same file's modification time, so both mechanisms count from the latest pass.
 
-Report the backup path and briefly summarize what you consolidated, updated, or pruned. For each proposal, report its status and source memories, with its manifest path and exact local head while pending and its public URL after publication and reading the request back. Report candidates held by a read-only parent task to its owning lead. Also report memories retired because their promotion merged or their target already covered them. If the memories were already concise and nothing changed, say so.
+Report the backup path and briefly summarize what you consolidated, updated, or pruned. For each proposal, report its status and source memories, with its proposal record while pending and its public URL after publication and reading the request back. Report candidates held by a read-only parent task to its owning lead. Also report memories retired because their promotion merged or their target already covered them. If the memories were already concise and nothing changed, say so.
