@@ -34,7 +34,7 @@ description: >-
   - Prefer bare fixed numeric modes for external commands, as in `chmod 600`, because their argument bytes are preserved.
   - Build a home path from `$env.HOME? | default $nu.home-dir` because a quoted `~` stays literal.
 
-- **Interpolation**: prefer native `$"...($value)..."` for complex string assembly, keeping simple prefix or suffix concatenation when it reads naturally. Escape literal parentheses as `\(` and `\)` in double-quoted interpolations.
+- **Interpolation**: prefer native `$"...($value)..."` to concatenating text and values, and use multiline strings for multiline text. Escape literal parentheses as `\(` and `\)` in double-quoted interpolations.
 
 - **Multiline strings**: align the opening quote, content, and closing quote at the same column, then place `| str dedent` from `std-rfc/str` on the next line and any enclosing parenthesis on its own line.
 
