@@ -93,10 +93,10 @@ Write within the recorded structure for reviewers who have not seen the conversa
 
 1. Confirm that the remote head equals the final head SHA, which is the approved head when no work was pending, and that the forge reports the branch as mergeable there. If the two heads differ, run `git range-diff <target>..<approved-head> <target>..<final-head>` and check each new or changed commit against the approved scope. A commit is out of scope if it touches paths outside `git diff --name-only <target>...<approved-head>` or adds behavior that none of the quoted title, description, findings, fixes, or follow-ups covers, and a commit presented as a review fix must match a quoted finding. Stop and report on a head mismatch or an out-of-scope commit.
 2. Wait for CI to pass on that head. On GitHub, first wait (bounded) until `gh pr view <n> --json headRefOid,statusCheckRollup` shows that head with at least one check, because right after a push or branch update `gh pr checks` fails with `no checks reported` until GitHub registers the new head's checks.
-3. On GitHub, next wait for `gh pr checks <n> --watch --fail-fast`, then (bounded) for `gh pr view <n> --json mergeStateStatus` to read `CLEAN`, because some required checks, such as Codecov, are created only after the others finish.
+3. On GitHub, next wait for `gh pr checks <n> --watch --interval 60 --fail-fast`, then (bounded) for `gh pr view <n> --json mergeStateStatus` to read `CLEAN`, because some required checks, such as Codecov, are created only after the others finish.
 4. If `mergeStateStatus` reads `BEHIND`, refresh the target branch and rebase the request branch onto it, following the ownership and push safeguards in [Publication](#publication). Repeat steps 2 and 3 on the new head.
 5. Merge with the repository's merge method at that head, such as `gh pr merge <n> --squash --match-head-commit <sha>`. Never pass `--auto`, and pass `--admin` only where the repository documents it.
-6. After the merge, verify the remote state and confirm CI passes on the target branch. For GitHub squash merges, keep GitHub's default commit message. Report a merge queued by GitLab's default auto-merge as pending until it lands.
+6. After the merge, verify the remote state and confirm CI passes on the target branch, using `gh run watch <run-id> --interval 60 --exit-status` on GitHub. For GitHub squash merges, keep GitHub's default commit message. Report a merge queued by GitLab's default auto-merge as pending until it lands.
 
 ## Conflict resolution
 
