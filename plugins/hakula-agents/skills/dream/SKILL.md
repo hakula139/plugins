@@ -83,8 +83,7 @@ A memory's frontmatter can record its promotion state:
 
 For a linked URL, check the request's state using the hosting service's CLI, such as `gh pr view <URL> --json state` or `glab mr view <URL>`:
 
-- **Merged, general memories**: Delete the memory and its index line, then remove or reword every `[[name]]` link to it.
-- **Merged, model- or snapshot-specific delegation evidence**: Keep the memory file, its index line, and valid links. Remove only its stale `promotion` and `proposal` metadata.
+- **Merged**: Delete the memory and its index line, then remove or reword every `[[name]]` link to it.
 - **Closed without merging**: Keep the memory and its `promotion` URL. Never propose it again.
 - **Open**: Leave the memory and its proposal pointer unchanged.
 
@@ -102,7 +101,7 @@ A memory is a candidate only when all of these hold:
 
 Age and repetition are signals to investigate durability. Sessions from the same task do not establish independent contexts or broader applicability. An explicit preference applies within the scope the user gave it and can qualify on its first occurrence, without evidence from unrelated projects.
 
-Exclude temporary task parameters, facts readers can derive from code or tools, requirements those tools enforce, and duplicate or generic process advice. Keep a still-useful local fact in memory when the client's rules permit it. If another durable source already owns the rule, use that source without adding another instruction.
+Exclude temporary task parameters and candidates that the target repository's documentation rules reject, keeping useful local facts in memory when the client's rules permit it.
 
 When the parent task is read-only or report-only, stop at candidates and draft instruction edits in the report, before any target-repository writes.
 
@@ -115,11 +114,11 @@ Choose the most specific file that owns the rule:
 - **One skill's procedure**: The skill's source `SKILL.md`, in the repository that ships it: the `repository` of the plugin that installs it, or the place the configuration repository's `AGENTS.md` names. Skip any skill whose source cannot be traced to a repository.
 - **General delegation guidance**: The `model-delegation` skill. Model- and snapshot-specific task observations have no promotion target and remain in project memory.
 
-Read the target before promoting a rule. If it already states the rule, delete the memory and its index line. If its admission rules reject the rule, such as when a repository admits only constraints a reader cannot infer from its code, keep the memory. For a skill target, apply the skill-authoring guidance available from its repository or client.
+Read the target before promoting a rule. If it already states the rule, delete the memory and its index line. If its admission rules reject the rule, keep the memory. For a skill target, apply the skill-authoring guidance available from its repository or client.
 
 ### Integrate
 
-Rewrite each rule to fit the target's structure, writing conventions, and documentation rules. Review the complete affected construct and neighboring rules, merging equivalent guidance so each rule has one home. Never paste memory text verbatim. Remove the **Why** and **How to apply** scaffolding, keeping only the reasoning readers need to apply the rule. Promote only what the evidence supports, without turning an example or incident into a broader requirement. Re-run each tool fact as the target words it, in the setting the target describes, such as the repository's own test runner, on the version now pinned. Drop any that does not reproduce, and correct its memory as Phase 3 describes. State the rule in terms visible from the target, without naming tools its readers cannot find, such as a local-only skill.
+Rewrite each rule to fit the target's structure, writing conventions, and documentation rules, stripping the memory's **Why** and **How to apply** scaffolding while keeping the reasoning readers need to apply the rule. Promote only what the evidence supports, without turning an incident into a broader requirement or naming tools the target's readers cannot find. Re-run each tool fact as the target words it on the version now pinned, dropping any claim that fails to reproduce and correcting its memory as Phase 3 describes.
 
 ### Prepare and review proposals
 

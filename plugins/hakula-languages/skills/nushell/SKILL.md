@@ -84,9 +84,8 @@ These traps assume the Nushell Book's [Thinking in Nu](https://www.nushell.sh/bo
 #### Arguments
 
 - **Forwarding arguments needs `def --wrapped`.** A plain `def` parses flags in `...args` itself. `--wrapped` also passes `--help` through as an argument, so a command whose operands may start with `-` keeps a plain `def` and its callers pass `--`.
-- **`nu <script> <args>` re-parses the arguments as source text.** Nushell rebuilds the `main` call from the arguments, quoting one only when it holds whitespace or a special character such as `;` or starts with `$`, so an untyped `main` parameter receives `8` as an int. Three shapes stay code on the pinned Nushell ([nushell/nushell#19484](https://github.com/nushell/nushell/issues/19484)): the name part of a `--` argument before any `=`, even after a positional (`'--x;print INJECTED'` prints `INJECTED` when `main` accepts `--x` or the argument follows `--`); a bare redirection token (`'o>' out.txt` sends `main`'s output to `out.txt`, truncating it even when `main` only prints); and an argument starting with `...$` (`'...$env.PATH'` spreads `PATH` into the arguments). Never pass an untrusted string as a script argument. Pass it through stdin, an environment variable, or a file, or check it against an allowlist pattern first.
-- **Wrapper-provided scalar options supply defaults.** `makeWrapper --add-flag` puts them before caller arguments, and Nushell keeps the last repeated scalar value, so a later `--option <value>` selects that value when the command's contract permits it. Valued booleans use the same precedence, and a switch accepts an assignment such as `--force=false`. The fixed-value rule below applies only when a documented constraint makes a value immutable.
-- **Use `makeWrapper --set` for a value a documented constraint makes immutable.** It exports an environment value for the script to read, so caller arguments cannot replace it through option precedence.
+- **`nu <script> <args>` re-parses the arguments as source text.** Nushell rebuilds the `main` call from the arguments, quoting one only when it holds whitespace or a special character such as `;` or starts with `$`, so an untyped `main` parameter receives `8` as an int. Three shapes stay code on the pinned Nushell ([nushell/nushell#19484](https://github.com/nushell/nushell/issues/19484)): the name part of a `--` argument before any `=`, even after a positional (`'--x;print INJECTED'` prints `INJECTED` when `main` accepts `--x` or the argument follows `--`), a bare redirection token (`'o>' out.txt` sends `main`'s output to `out.txt`, truncating it even when `main` only prints), and an argument starting with `...$` (`'...$env.PATH'` spreads `PATH` into the arguments). Never pass an untrusted string as a script argument. Pass it through stdin, an environment variable, or a file, or check it against an allowlist pattern first.
+- **Wrapper-supplied options remain overridable.** `makeWrapper --add-flag` values precede caller arguments, and Nushell accepts later overrides, including `--switch=false`. Values that a documented constraint makes immutable belong in `makeWrapper --set` environment variables.
 - **A flag on `def main` does not reach `def "main <sub>"`.** `script sub --flag` fails with an unknown flag, and `script --flag sub` passes `sub` to `main` as a positional, so declare a shared flag on each subcommand.
 
 ### External commands
@@ -112,13 +111,9 @@ Test a script with `std/assert` when its output is easy to get subtly wrong. Dri
 
 - **Structured inputs**: write JSON and JSONL test inputs as Nushell records and lists, serialized with `to json` for JSON or `to json --raw` per line for JSONL.
 
-- **Fixtures**: when several cases differ only in document-like or byte-sensitive inputs, store them as golden files under the project's fixture directory, with one directory per case.
+- **Fixtures**: keep small structured inputs in the test file. When several cases differ in document-like or byte-sensitive inputs, store them as golden files under the project's fixture directory, copying each input into a `mktemp` directory before running the script so the script never writes to a fixture.
 
-  - A `case.nuon` file holds what the golden files cannot express. Write a line break as `\n`, except in a multi-line text string, which reads better as a multiline literal with continuation lines starting at column 0 because NUON preserves indentation as content. Format it like Nushell source, putting each list item on its own line.
-
-  - Keep small structured inputs in the test file.
-
-  - Copy each input into a `mktemp` directory before running the script so the script never writes to a fixture.
+  - When a fixture directory bundles structured inputs and expected outputs in `case.nuon`, multiline strings preserve leading indentation as literal content, so start continuation lines at column 0 and use `\n` for line breaks in single-line strings.
 
 - **Timestamps**: fixtures use a fixed day in UTC, and a test that runs the script sets `TZ` for the child process, as in `with-env {TZ: "UTC"} { ^$nu.current-exe $script }`, so a local-time computation does not depend on the runner's zone, since the running Nushell reads its zone only at startup.
 
@@ -128,6 +123,6 @@ Use the repository's declared test runner and read its maintained guide for test
 
 ## Linting
 
-`nu --ide-check` exits 0 even when it reports an error, printing diagnostics as JSON, so inspect the severities. Without a max-errors argument, it exits 1 before reading the file. Because it catches delimiter errors and local `def` arity mismatches but treats a mistyped command as an external call, run the script once for real.
+`nu --ide-check <max-errors> <file>` prints JSON diagnostics and exits 0 even on errors, while treating mistyped commands as external calls, so inspect the severities and run the script once for real.
 
 Don't format with `nufmt`. It reindents to four spaces by default, and even with `indent: 2` in its config it joins a pipeline split one stage per line, or a call split one option per line, back onto one line.

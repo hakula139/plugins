@@ -52,11 +52,8 @@ Precedence:
 - Group related items by proximity, and give important elements more surrounding space, so nearness reads as relationship and extra space reads as importance.
 - Align related edges to shared key lines, keep body copy left-aligned, and center only short headings, because centered and justified blocks break alignment and slow reading. Do not justify browser body text without hyphenation.
 - Design from a single small-screen column first, with no page-level horizontal overflow or obscured focus, so content and controls stay reachable.
-- Support 200% text resize and reflow at 320 CSS px (400% zoom) without two-dimensional scrolling, except for elements that require a two-dimensional layout such as data tables, maps, and diagrams.
-- Show less text, and use more icons or images where they make the content more readable, but do not blindly switch text to images, so attention stays on the idea.
-- Put detail in tooltips or popovers when needed, so the screen does not fill with text.
-- Place controls in a row's free space before overlapping or stacking them, so no control is covered while part of the row sits empty.
-- Design for growth, with many tabs, columns, or aspects, so added tabs or columns do not overflow.
+- Support 200% text resize and reflow at 320 CSS px (400% zoom) without two-dimensional scrolling, except for elements that require a two-dimensional layout such as data tables, maps, and diagrams, and design rows and tab sets so added controls or items wrap or scroll cleanly without covering existing controls.
+- Keep copy concise, pairing icons or images where they aid scanning and moving secondary detail into disclosures or popovers when a view grows dense.
 - Style each element type the same way on every screen, so a reader never has to relearn it.
 
 ### Typography
