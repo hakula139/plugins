@@ -30,22 +30,15 @@ A delegate that disagrees with the brief or a review finding stops the affected 
 
 ## Independent review and evidence
 
-Have a flagship-tier reviewer independent of the implementer review every delegated implementation and its tests, together with the commands and results behind behavioral claims. A focused review is sufficient for a minor mechanical change, while structural or behavior-heavy changes need correspondingly deeper checking.
+Have a flagship-tier reviewer independent of the implementer review every delegated implementation and its tests, scaling to a focused review for minor mechanical changes. Require each verification claim to name its command, full commit SHA on the branch head, worktree path, and outcome. Independently inspect or rerun the relevant checks at that revision, and check the live branch head at acceptance.
 
-For behavior-based acceptance, require each claimed result to name its command, outcome, full immutable commit SHA, and exact worktree path. Independently inspect or rerun the relevant checks at that revision. For a claim about a moving branch's current state, have the coordinator or flagship reviewer inspect the live head at acceptance, since an earlier SHA cannot establish the current state.
-
-Rerun any probe cited to support a deviation from the brief or a review finding at the same revision, and resolve any discrepancy before accepting the deviation.
-
-Check sibling consistency when structural edits follow established patterns. For documentation moves or edits involving dependencies or behavior, reconcile cross-references, dependency claims, and behavior descriptions with current code and affected documents before accepting absolute claims.
+Rerun any probe cited to support a deviation from the brief or a review finding at the same revision, and resolve any discrepancy before accepting the deviation. Reconcile sibling consistency, cross-references, and behavior descriptions against current code and affected documents.
 
 ## Task-specific verification
 
-Apply these checks when the task creates the corresponding risk:
-
-- **UI and visual output**: Supply a measuring script when acceptance depends on measurements, exercise the final result in a browser, and inspect rendered screenshots of the relevant states before acceptance.
-- **Behavior-heavy tests**: Use mutation testing when assertion strength is uncertain or the behavior is critical, including when line coverage is complete. Investigate surviving mutants in proportion to the behavior they exercise.
-- **Resource-sensitive tests**: Report the measured environment and test conditions precisely, distinguishing configured resource limits from observed concurrency and recording parallelism settings that could change the result.
-- **Dense-prose polishing**: Treat delegated polish of dense rule or reference prose as a draft. Before publication, have a flagship reviewer compare every changed hunk with the original and preserve prohibitions, attribution, claim boundaries, qualifiers, and evaluative vocabulary. Limit the assignment to narrative paragraphs when a full fidelity review would be disproportionate to the requested edit.
+- **UI and visual output**: Verify rendered results across viewports under `frontend-design` and `browser-debugging` before acceptance.
+- **Behavior-heavy and resource-sensitive tests**: Use mutation testing when assertion strength is uncertain, and report configured resource limits, parallelism settings, and observed concurrency alongside timing or capacity results.
+- **Dense-prose polishing**: Treat delegated polish of rule or reference prose as a draft, and have a flagship reviewer compare every changed hunk against the original to preserve prohibitions, claim boundaries, and qualifiers.
 
 ## Promotion and publication
 

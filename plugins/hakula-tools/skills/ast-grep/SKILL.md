@@ -71,7 +71,7 @@ ast-grep scan --rule "$rule_dir/await-in-for.yml" src/
 
 Shell rewrites bypass the editor tools' hooks, including auto-formatting and comment checks, and Claude Code checkpoints cannot roll them back. Treat every rewrite as an unreviewed bulk edit.
 
-1. Run `git status --short`. On a clean tree, `git diff` shows only the rewrite and `git restore` undoes it. Uncommitted changes may belong to the user or another agent, so never stash, commit, or restore them, and exclude their files with `--globs '!<path>'` so restoring the rewrite cannot discard them.
+1. Check `git status --short`, and exclude any pre-existing dirty paths with `--globs '!<path>'` so previewing or restoring the rewrite leaves other uncommitted work untouched.
 
 2. Preview the change. `-r` on `run`, or a `fix` key in a rule, prints a diff and writes nothing.
 

@@ -39,9 +39,8 @@ tmux supplies Workmux's terminal backend.
 
 ## Ignore rules
 
-- Keep portable generated outputs and project-local private state in repository ignores. Put personal OS, editor, and optional assistant state in the global ignore. Check the configured producer before treating an artifact as optional. Contributor privacy must hold without the maintainer's global excludes.
-- Match generated directories wherever their producer can create them. Anchor paths only when the producer fixes their location. A trailing `/` matches directories, leaving same-named files and symlinks visible. Preserve source directories and workflow aliases when ignoring output links.
-- Before changing a rule, verify root and nested paths, files, directories, symlinks, and relevant source exceptions with isolated `git check-ignore` cases that disable global excludes.
+- Keep generated outputs and project-local private state in repository ignores, and put personal OS, editor, and optional assistant state in the global ignore so contributor privacy holds without the maintainer's global excludes.
+- Match generated directories wherever their producer creates them, anchoring paths only when the location is fixed. Use a trailing `/` for directories, preserve source directories and workflow aliases when ignoring output links, and verify subtle rules with isolated `git check-ignore` cases that disable global excludes.
 
 ## Commits
 
@@ -56,16 +55,15 @@ tmux supplies Workmux's terminal backend.
 
 ### Repository conventions
 
-- Before drafting, learn the conventions for titles, body structure, assignees, and labels from the effective PR / MR template, including inherited forge defaults, and recent comparable, human-authored requests. For GitHub, when the target has no local template, check the owner's public `.github` repository. Prefer examples closest in scope and size, broaden the sample when they do not cover the change, and follow explicit repository rules where examples differ.
-- Record the chosen examples and the conventions they show, including heading names, hierarchy and order, prose or list structure, and validation format, and include these notes in any brief.
+- Match conventions already established in `AGENTS.md`, the effective PR / MR template, or recent history directly. In an unfamiliar repository, sample comparable human-authored requests (and the owner's public `.github` repository on GitHub when no local template exists) to learn title, body, assignee, and label patterns, and record those conventions in any brief.
 - Infer assignees from comparable requests, checking the authenticated identity when the convention is self-assignment.
-- Match labels to established usage and the available labels' descriptions. Commit types can inform the choice but do not imply a fixed label mapping.
+- Match labels to established usage and the available labels' descriptions. Commit types can inform the choice without implying a fixed label mapping.
 - If metadata remains ambiguous, choose the closest established match, record the choice, and ask the user to confirm it in the next report. Never invent a rule or silently omit metadata.
 - Keep each request focused on one purpose. Put unrelated changes, including dependency or lockfile churn, in separate requests, and fix every occurrence of the same problem within a repository in one request.
 
 ### Description
 
-Write within the recorded structure for reviewers who have not seen the conversation, without repeating a point across its sections.
+Write within the repository's structure for reviewers who have not seen the conversation, without repeating a point across its sections.
 
 - Open with the concrete problem or goal and the resulting behavior.
 - Give reviewers what they need to assess the change, such as rationale, tradeoffs, measurements, or migration steps.
@@ -77,8 +75,8 @@ Write within the recorded structure for reviewers who have not seen the conversa
 
 - Rebase task branches onto the current target branch whenever integrating upstream changes. Never merge the target branch into a task branch or use an Update branch action.
 - Coordinate exclusive ownership before rewriting a shared or bot-managed branch. Until ownership is established, publish fixes as new commits and use `git revert` for pushed changes. Before rebasing a published branch, verify that the observed remote head is an ancestor of the local tip. Push rebased history with `--force-with-lease=refs/heads/<branch>:<observed-remote-head>`. If the lease fails, inspect and integrate remote changes before retrying. Never use a blind force push.
-- Before pushing, verify the base branch, diff, and commit count. Before creating or updating a request, compare its complete title and body with the recorded conventions and fix any difference.
-- After pushing `HEAD:refs/heads/<branch>` from a detached worktree, synchronize the owned local branch to the published head. Fast-forward when possible. After a rebase, verify that no other worktree or agent owns the branch, then use `git update-ref refs/heads/<branch> <published-head> <pre-rebase-local-head>`. If the expected old tip changed or another worktree owns the branch, coordinate with its owner before updating it.
+- Before pushing, verify the base branch, diff, and commit count. Before creating or updating a request, compare its complete title and body with the repository's conventions and fix any difference.
+- After pushing `HEAD:refs/heads/<branch>` from a detached worktree, synchronize the owned local branch to the published head. Fast-forward when possible. For a non-fast-forward rebase, verify that no other worktree or agent owns the branch, then use `git update-ref refs/heads/<branch> <published-head> <pre-rebase-local-head>`. If the expected old tip changed or another worktree owns the branch, coordinate with its owner before updating it.
 - If asked only to draft a title and body, return the text without publishing. A request for a draft PR / MR authorizes publishing it as a draft.
 - Set assignees and labels when creating a request. If no existing label fits, create one that follows the repository's label scheme.
 - Pass multiline bodies through a file or structured argument, such as `gh pr create --body-file <file>`.
@@ -86,6 +84,7 @@ Write within the recorded structure for reviewers who have not seen the conversa
 - Read back each created or updated request, verifying its title, body, base, diff, assignees, and labels, and fix anything lost before reporting completion.
 - Request review once per PR / MR. Fix every finding, including suggestions, and verify the fixes without re-requesting review after later pushes. Merge with the approval required by [Authorization](#authorization).
 - Finalize the title and body before merging, since a squash merge can copy them into the commit message, as GitHub's PR_BODY default and a GitLab `%{description}` template do, and an edit afterwards cannot change it.
+- When an unattended workflow gates creating a public branch or PR / MR behind human approval, delegate publication after approval to the `operator` agent when one is available. Quote the user's approval verbatim together with the target repository, remote, base, branch, head SHA, labels and assignees, author and committer identities, expected active API account, and approved title and body (inline or via a body file paired with its byte digest).
 - For an approved merge, delegate to the `operator` agent when one is available, once the branch owner reports its pending work pushed. Its spawn prompt quotes the user's approval verbatim and gives the approved head SHA, the final head SHA, the title and description at approval, the review findings or fix list, and the user's follow-ups on the request. Have it follow [Merging](#merging).
 - Stack a request that depends on or overlaps another open request on that request's branch, and name the base request in the description. Keep dependent requests in one stack of at most three unmerged requests, and once three are open, land the bottom one before opening another. After the base squash-merges, run `git rebase --onto <default-branch> <old-base-head> <branch>` to drop its pre-squash commits, then retarget the request to the default branch if the forge has not.
 
