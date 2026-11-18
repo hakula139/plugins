@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Model Delegation'
+  short_description: 'Apply delegation briefs, tier boundaries, and review safeguards'
+  default_prompt: 'Use $model-delegation to brief and verify this delegated task within its model tier.'
