@@ -5,10 +5,12 @@
 # ==================================================================================================
 # Checks what installers rely on: each `SKILL.md` names its directory and has a description within
 # the Agent Skills limit, skill names are unique across plugins, and the marketplace entries, the
-# `plugins/` directories, and each `plugin.json` name the same plugins.
+# `plugins/` directories, and each `plugin.json` name the same plugins. Plugin manifests own versions
+# and use semantic versioning.
 # ==================================================================================================
 
 const MAX_DESCRIPTION = 1024
+const SEMVER = '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$'
 
 def directories [dir: path]: nothing -> list<string> {
   ls --full-paths $dir
@@ -20,13 +22,29 @@ def directories [dir: path]: nothing -> list<string> {
 
 # The `SKILL.md` frontmatter as a record, or the reason it cannot be read.
 def frontmatter [file: path]: nothing -> record {
-  let lines = (open --raw $file | into string | lines)
-  let end = ($lines | skip 1 | enumerate | where item == "---" | first)
+  let text = try {
+    open --raw $file
+    | into string
+  } catch {|err|
+    return {error: $err.msg}
+  }
+  let lines = ($text | lines)
+  let end = (
+    $lines
+    | skip 1
+    | enumerate
+    | where item == "---"
+    | first
+  )
   if ($lines | first) != "---" or $end == null {
     return {error: "no YAML frontmatter"}
   }
   let meta = try {
-    $lines | skip 1 | first $end.index | str join "\n" | from yaml
+    $lines
+    | skip 1
+    | first $end.index
+    | str join "\n"
+    | from yaml
   } catch {|err|
     return {error: $err.rendered}
   }
@@ -49,6 +67,7 @@ def skill-errors [skill: path]: nothing -> list<string> {
   let name = ($skill | path basename)
   let description = $parsed.meta.description?
   [
+    (if "version" in $parsed.meta { $"($file): version belongs in plugin.json" })
     (if $parsed.meta.name? != $name {
       $"($file): name ($parsed.meta.name? | to nuon) differs from its directory ($name)"
     })
@@ -64,14 +83,19 @@ def skill-errors [skill: path]: nothing -> list<string> {
 def plugin-errors [root: path, entry: record]: nothing -> list<string> {
   let source = $"./plugins/($entry.name)"
   let manifest = ($root | path join "plugins" $entry.name ".claude-plugin/plugin.json")
+  if not ($manifest | path exists) {
+    return [$"($manifest): missing"]
+  }
+  let meta = (open $manifest)
   [
     (if $entry.source != $source {
       $"marketplace.json: ($entry.name) has source ($entry.source | to nuon), expected ($source)"
     })
-    (if not ($manifest | path exists) {
-      $"($manifest): missing"
-    } else if (open $manifest).name? != $entry.name {
+    (if $meta.name? != $entry.name {
       $"($manifest): name differs from its marketplace entry ($entry.name)"
+    })
+    (if ($meta.version? | describe) != "string" or $meta.version !~ $SEMVER {
+      $"($manifest): version is not valid semantic versioning"
     })
   ]
   | compact
@@ -104,9 +128,21 @@ def main [
     (if $named != $plugins {
       [$"marketplace.json: entries ($named | to nuon) differ from plugins/ ($plugins | to nuon)"]
     })
-    ($skill_dirs | where {|dir| not ($dir | path exists) } | each {|dir| $"($dir): missing" })
-    ($entries | each {|entry| plugin-errors $root $entry } | flatten)
-    ($skills | each {|skill| skill-errors $skill.path } | flatten)
+    (
+      $skill_dirs
+      | where {|dir| not ($dir | path exists) }
+      | each {|dir| $"($dir): missing" }
+    )
+    (
+      $entries
+      | each {|entry| plugin-errors $root $entry }
+      | flatten
+    )
+    (
+      $skills
+      | each {|skill| skill-errors $skill.path }
+      | flatten
+    )
     (
       $skills
       | group-by name

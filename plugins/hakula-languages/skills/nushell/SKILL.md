@@ -58,7 +58,7 @@ These traps assume the Nushell Book's [Thinking in Nu](https://www.nushell.sh/bo
 
 - **`from json` accepts some plain text, so `try` cannot validate JSON.** `open` on an empty JSON, YAML, or NUON file returns null, while truncated JSON raises, so check the shape (`$j | describe | str starts-with "record"`) before reading a field.
 - **YAML error messages hide the parser's detail.** Read `$e.rendered` in the catch block, since `$e.msg` gives only a generic parsing or scanning message.
-- **`open --raw` yields a byte stream, which collects to `binary` on invalid UTF-8**, so a `: string` parameter or a `string ->` input raises a type error. To require UTF-8, pipe the stream itself into `into string` inside `try`, which raises `Non-UTF8 string` on invalid bytes and on a UTF-16 BOM. `into string` rejects every collected `binary`, valid or not.
+- **`open --raw` yields a byte stream, which collects to `binary` on invalid UTF-8**, so a `: string` parameter or a `string ->` input raises a type error. To require UTF-8, pipe the stream itself into `into string` inside `try`, which raises `Non-UTF8 string` on invalid bytes and on a UTF-16 BOM. Materialize the result into a `let` binding or `collect` inside `try` before streaming into `lines`, which otherwise replaces invalid UTF-8 with `U+FFFD`. `into string` rejects every collected `binary`, valid or not.
 
 #### Types and shapes
 

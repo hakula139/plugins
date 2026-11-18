@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Find Docs'
+  short_description: 'Look up current library and SDK docs with Context7'
+  default_prompt: 'Use $find-docs to verify current documentation and examples for this library.'
