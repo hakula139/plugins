@@ -30,6 +30,7 @@ A code move preserves behavior while making any needed layout and ordering fixes
 - Separate distinct blocks and sibling groups with a blank line, and keep closely related code and single-line siblings together. Where a long sequence's boundaries would otherwise blur, set off a multiline statement, field, or entry with blank lines, unless a related single-line sibling leads into it. A short set or list stays one block even when an entry spans a few lines.
 - Once one branch holds a blank line, put a blank line between all branches.
 - An entry added to an existing sequence follows the spacing and grouping its siblings use.
+- Before adding code to a file with section banners, read the banners around the insertion point and place the code under the section that owns its concern, not after whatever code it happens to follow. Give a concern no section owns its own section.
 - Order parameters and fields for readability: group related items, put dependencies before dependents, fall back to alphabetical order, and let API and project conventions win.
 - Group tests by behavior in the order the code runs, and within each behavior put the normal case first, even where a guard checks an error case before it.
 
