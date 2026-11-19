@@ -55,8 +55,8 @@ tmux supplies Workmux's terminal backend.
 
 ### Repository conventions
 
-- Match conventions already established in `AGENTS.md`, the effective PR / MR template, or recent history directly. In an unfamiliar repository, sample comparable human-authored requests (and the owner's public `.github` repository on GitHub when no local template exists) to learn title, body, assignee, and label patterns, and record those conventions in any brief.
-- Locate the PR / MR template before drafting the body: the repository's `.github/`, `docs/`, or root (`pull_request_template.md`, or a `PULL_REQUEST_TEMPLATE/` directory), GitLab's `.gitlab/merge_request_templates/`, then the owner's public `.github` repository on GitHub. `gh pr create --body` and `--body-file` never apply a template, so copy its sections and fill them in.
+- Match conventions already established in `AGENTS.md`, the effective PR / MR template, or recent history directly. In an unfamiliar repository, sample comparable human-authored requests to learn title, body, assignee, and label patterns, and record those conventions in any brief.
+- Locate the effective template before drafting the body: the repository's `.github/`, `docs/`, or root (`pull_request_template.md`, or a `PULL_REQUEST_TEMPLATE/` directory), GitLab's `.gitlab/merge_request_templates/`, then the owner's public `.github` repository on GitHub. `gh pr create --body` and `--body-file` never apply a template, so copy its sections and fill them in.
 - Infer assignees from comparable requests, checking the authenticated identity when the convention is self-assignment.
 - Match labels to established usage and the available labels' descriptions. Commit types can inform the choice without implying a fixed label mapping.
 - If metadata remains ambiguous, choose the closest established match, record the choice, and ask the user to confirm it in the next report. Never invent a rule or silently omit metadata.
