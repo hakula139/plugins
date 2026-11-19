@@ -74,20 +74,34 @@ Write within the repository's structure for reviewers who have not seen the conv
 
 ### Publication
 
+#### Pushing and rebasing
+
+- Before pushing, verify the base branch, diff, and commit count.
 - Rebase task branches onto the current target branch whenever integrating upstream changes. Never merge the target branch into a task branch or use an Update branch action.
-- Coordinate exclusive ownership before rewriting a shared or bot-managed branch. Until ownership is established, publish fixes as new commits and use `git revert` for pushed changes. Before rebasing a published branch, verify that the observed remote head is an ancestor of the local tip. Push rebased history with `--force-with-lease=refs/heads/<branch>:<observed-remote-head>`. If the lease fails, inspect and integrate remote changes before retrying. Never use a blind force push.
-- Before pushing, verify the base branch, diff, and commit count. Before creating or updating a request, compare its complete title and body with the repository's conventions and fix any difference.
-- After pushing `HEAD:refs/heads/<branch>` from a detached worktree, synchronize the owned local branch to the published head. Fast-forward when possible. For a non-fast-forward rebase, verify that no other worktree or agent owns the branch, then use `git update-ref refs/heads/<branch> <published-head> <pre-rebase-local-head>`. If the expected old tip changed or another worktree owns the branch, coordinate with its owner before updating it.
-- If asked only to draft a title and body, return the text without publishing. A request for a draft PR / MR authorizes publishing it as a draft.
+- Coordinate exclusive ownership before rewriting a shared or bot-managed branch. Until ownership is established, publish fixes as new commits and use `git revert` for pushed changes.
+- Before rebasing a published branch, verify that the observed remote head is an ancestor of the local tip, and push the rebased history with `--force-with-lease=refs/heads/<branch>:<observed-remote-head>`. If the lease fails, inspect and integrate remote changes before retrying. Never use a blind force push.
+- After pushing `HEAD:refs/heads/<branch>` from a detached worktree, synchronize the owned local branch to the published head, fast-forwarding when possible. For a non-fast-forward rebase, verify that no other worktree or agent owns the branch, then run `git update-ref refs/heads/<branch> <published-head> <pre-rebase-local-head>`. If the expected old tip changed or another worktree owns the branch, coordinate with its owner before updating it.
+
+#### Creating and updating requests
+
+- A request for a draft PR / MR authorizes publishing it as a draft.
+- Compare the complete title and body with the repository's conventions and fix any difference before creating or updating a request, passing multiline bodies through a file or structured argument such as `gh pr create --body-file <file>`.
 - Set assignees and labels when creating a request. If no existing label fits, create one that follows the repository's label scheme.
-- Pass multiline bodies through a file or structured argument, such as `gh pr create --body-file <file>`.
 - Use `#N` for issues and GitHub PRs in the same repository, and `!N` for GitLab MRs.
 - Read back each created or updated request, verifying its title, body, base, diff, assignees, and labels, and fix anything lost before reporting completion.
-- Request review once per PR / MR. Fix every finding, including suggestions, and verify the fixes without re-requesting review after later pushes. Merge with the approval required by [Authorization](#authorization).
-- Finalize the title and body before merging, since a squash merge can copy them into the commit message, as GitHub's PR_BODY default and a GitLab `%{description}` template do, and an edit afterwards cannot change it.
+
+#### Review and operator handoffs
+
+- Request review once per PR / MR. Fix every finding, including suggestions, and verify the fixes without re-requesting review after later pushes.
+- Finalize the title and body before merging, since a squash merge can copy them into the commit message, as GitHub's PR_BODY default and a GitLab `%{description}` template do, and a later edit cannot change it.
 - When an unattended workflow gates creating a public branch or PR / MR behind human approval, delegate publication after approval to the `operator` agent when one is available. Quote the user's approval verbatim together with the target repository, remote, base, branch, head SHA, labels and assignees, author and committer identities, expected active API account, and approved title and body (inline or via a body file paired with its byte digest).
-- For an approved merge, delegate to the `operator` agent when one is available, once the branch owner reports its pending work pushed. Its spawn prompt quotes the user's approval verbatim and gives the approved head SHA, the final head SHA, the title and description at approval, the review findings or fix list, and the user's follow-ups on the request. Have it follow [Merging](#merging).
-- Stack a request that depends on or overlaps another open request on that request's branch, and name the base request in the description. Keep dependent requests in one stack of at most three unmerged requests, and once three are open, land the bottom one before opening another. After the base squash-merges, run `git rebase --onto <default-branch> <old-base-head> <branch>` to drop its pre-squash commits, then retarget the request to the default branch if the forge has not.
+- For an approved merge, delegate to the `operator` agent when one is available, once the branch owner reports its pending work pushed. Quote the user's approval verbatim together with the approved head SHA, the final head SHA, the title and description at approval, the review findings or fix list, and the user's follow-ups on the request, and have it follow [Merging](#merging).
+
+#### Stacked requests
+
+- Stack a request that depends on or overlaps another open request on that request's branch, and name the base request in the description.
+- Keep dependent requests in one stack of at most three unmerged requests, and once three are open, land the bottom one before opening another.
+- After the base squash-merges, run `git rebase --onto <default-branch> <old-base-head> <branch>` to drop its pre-squash commits, then retarget the request to the default branch if the forge has not.
 
 ### Merging
 
